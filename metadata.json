@@ -1,0 +1,6 @@
+{
+  "name": "RS Higher Education Consultants",
+  "description": "Premier international education consultancy in Peshawar, Pakistan, guiding students across 16 global study destinations including USA, UK, Canada, Germany, Australia, and Europe.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-rs-red: #DB0303;
+    --color-rs-red-dark: #B30000;
+    --color-rs-red-light: #FF2E2E;
+    --color-gold: #C79A45;
+    --color-gold-light: #DFB35F;
+    --color-slate-dark: #0F172A;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #0F172A;
+    background-color: #FFFFFF;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-poppins {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF5F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #FCA5A5;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #DB0303;
+}
+
+/* Infinite Marquee Animations for University Logos */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 85s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 85s linear infinite;
+}
+
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee 95s linear infinite;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-slow-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 95s linear infinite;
+}
+
+.animate-marquee-slow-reverse:hover {
+  animation-play-state: paused;
+}
+
+.animate-float {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 5s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* Glassmorphism & Red Theme utilities */
+.glass-white {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(219, 3, 3, 0.12);
+}
+
+.glass-red {
+  background: rgba(219, 3, 3, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(219, 3, 3, 0.15);
+}
+
+.red-glow {
+  box-shadow: 0 10px 30px -10px rgba(219, 3, 3, 0.25);
+}
+
+.red-glow-lg {
+  box-shadow: 0 20px 40px -15px rgba(219, 3, 3, 0.35);
+}
