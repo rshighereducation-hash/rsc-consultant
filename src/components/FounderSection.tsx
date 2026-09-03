@@ -338,13 +338,13 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                   <span>Connect on WhatsApp</span>
                 </a>
 
-                <button
+                {/* <button
                   type="button"
                   onClick={openCeoPhotoModal}
                   className="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-2xl transition-all flex items-center gap-2 font-heading cursor-pointer">
                   <Upload className="w-4 h-4 text-[#DB0303]" />
                   <span>Upload Photo from PC</span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

@@ -1,12 +1,19 @@
-import React from 'react';
-import { useBrand } from '../context/BrandContext';
-import { Upload, Sparkles, ShieldCheck, Award, CheckCircle2 } from 'lucide-react';
+import React from "react";
+import { useBrand } from "../context/BrandContext";
+import logoImg from "../assets/images/logo.png";
+import {
+  Upload,
+  Sparkles,
+  ShieldCheck,
+  Award,
+  CheckCircle2,
+} from "lucide-react";
 
 interface RSLogoProps {
   className?: string;
-  variant?: 'full' | 'mark' | 'horizontal' | 'compact' | 'badge';
-  theme?: 'light' | 'dark' | 'red';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  variant?: "full" | "mark" | "horizontal" | "compact" | "badge";
+  theme?: "light" | "dark" | "red";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
   showUploadTrigger?: boolean;
 }
 
@@ -21,25 +28,26 @@ interface RSLogoProps {
  */
 export const RSOfficialFullLogo: React.FC<{
   className?: string;
-  theme?: 'red' | 'white';
+  theme?: "red" | "white";
   height?: number | string;
-}> = ({ className = '', theme = 'red', height = 80 }) => {
-  const primaryColor = theme === 'white' ? '#FFFFFF' : '#C8102E';
-  const secondaryColor = theme === 'white' ? '#FFFFFF' : '#B80000';
-  const starColor = theme === 'white' ? '#FFF2A8' : '#C8102E';
+}> = ({ className = "", theme = "red", height = 80 }) => {
+  const primaryColor = theme === "white" ? "#FFFFFF" : "#C8102E";
+  const secondaryColor = theme === "white" ? "#FFFFFF" : "#B80000";
+  const starColor = theme === "white" ? "#FFF2A8" : "#C8102E";
 
   return (
     <div
       className={`inline-flex flex-col items-center justify-center select-none ${className}`}
-      title="RS Higher Education Consultants - Official Brand Logo"
-    >
+      title="RS Higher Education Consultants - Official Brand Logo">
       <svg
         viewBox="0 0 600 480"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ height: typeof height === 'number' ? `${height}px` : height, width: 'auto' }}
-        className="max-w-full drop-shadow-xs"
-      >
+        style={{
+          height: typeof height === "number" ? `${height}px` : height,
+          width: "auto",
+        }}
+        className="max-w-full drop-shadow-xs">
         {/* === Top Monogram Group === */}
         <g id="rs-monogram">
           {/* Serif 'R' */}
@@ -116,16 +124,23 @@ export const RSOfficialFullLogo: React.FC<{
           fontSize="36"
           fontFamily="'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif"
           fontWeight="700"
-          letterSpacing="12"
-        >
+          letterSpacing="12">
           HIGHER EDUCATION
         </text>
 
         {/* === Sub-line: — CONSULTANTS — === */}
         <g transform="translate(0, 460)">
           {/* Left Horizontal Red Line */}
-          <line x1="20" y1="-8" x2="160" y2="-8" stroke={primaryColor} strokeWidth="3.5" strokeLinecap="round" />
-          
+          <line
+            x1="20"
+            y1="-8"
+            x2="160"
+            y2="-8"
+            stroke={primaryColor}
+            strokeWidth="3.5"
+            strokeLinecap="round"
+          />
+
           {/* Center Text */}
           <text
             x="300"
@@ -135,13 +150,20 @@ export const RSOfficialFullLogo: React.FC<{
             fontSize="26"
             fontFamily="'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif"
             fontWeight="700"
-            letterSpacing="8"
-          >
+            letterSpacing="8">
             CONSULTANTS
           </text>
-          
+
           {/* Right Horizontal Red Line */}
-          <line x1="440" y1="-8" x2="580" y2="-8" stroke={primaryColor} strokeWidth="3.5" strokeLinecap="round" />
+          <line
+            x1="440"
+            y1="-8"
+            x2="580"
+            y2="-8"
+            stroke={primaryColor}
+            strokeWidth="3.5"
+            strokeLinecap="round"
+          />
         </g>
       </svg>
     </div>
@@ -150,29 +172,27 @@ export const RSOfficialFullLogo: React.FC<{
 
 export const RSOfficialEmblem: React.FC<{
   className?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  variant?: 'square' | 'circle' | 'transparent';
-}> = ({ className = '', size = 'md', variant = 'circle' }) => {
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  variant?: "square" | "circle" | "transparent";
+}> = ({ className = "", size = "md", variant = "circle" }) => {
   const sizeMap = {
-    xs: 'w-8 h-8',
-    sm: 'w-10 h-10',
-    md: 'w-14 h-14 sm:w-16 sm:h-16',
-    lg: 'w-20 h-20 sm:w-24 sm:h-24',
-    xl: 'w-28 h-28 sm:w-32 sm:h-32',
-    '2xl': 'w-40 h-40 sm:w-48 sm:h-48',
+    xs: "w-8 h-8",
+    sm: "w-10 h-10",
+    md: "w-14 h-14 sm:w-16 sm:h-16",
+    lg: "w-20 h-20 sm:w-24 sm:h-24",
+    xl: "w-28 h-28 sm:w-32 sm:h-32",
+    "2xl": "w-40 h-40 sm:w-48 sm:h-48",
   };
 
   return (
     <div
       className={`relative inline-block select-none shrink-0 rounded-full overflow-hidden ${sizeMap[size]} ${className}`}
-      title="RS Higher Education Consultants Official Logo"
-    >
+      title="RS Higher Education Consultants Official Logo">
       <svg
         viewBox="0 0 500 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full drop-shadow-md rounded-full"
-      >
+        className="w-full h-full drop-shadow-md rounded-full">
         <defs>
           <linearGradient id="rsRedBg" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#E60000" />
@@ -186,10 +206,10 @@ export const RSOfficialEmblem: React.FC<{
         </defs>
 
         {/* Background (Circle by default, or Square) */}
-        {variant === 'circle' && (
+        {variant === "circle" && (
           <circle cx="250" cy="250" r="250" fill="url(#rsRedBg)" />
         )}
-        {variant === 'square' && (
+        {variant === "square" && (
           <rect width="500" height="500" rx="36" fill="url(#rsRedBg)" />
         )}
 
@@ -228,13 +248,19 @@ export const RSOfficialEmblem: React.FC<{
             fontSize="26"
             fontFamily="'Cinzel', 'Playfair Display', Georgia, serif"
             fontWeight="700"
-            letterSpacing="6"
-          >
+            letterSpacing="6">
             HIGHER EDUCATION
           </text>
 
           {/* "—— CONSULTANTS ——" Sub-rule and Typography */}
-          <line x1="90" y1="432" x2="165" y2="432" stroke="#FFFFFF" strokeWidth="2.5" />
+          <line
+            x1="90"
+            y1="432"
+            x2="165"
+            y2="432"
+            stroke="#FFFFFF"
+            strokeWidth="2.5"
+          />
           <text
             x="250"
             y="438"
@@ -243,11 +269,17 @@ export const RSOfficialEmblem: React.FC<{
             fontSize="18"
             fontFamily="'Cinzel', 'Playfair Display', Georgia, serif"
             fontWeight="600"
-            letterSpacing="5"
-          >
+            letterSpacing="5">
             CONSULTANTS
           </text>
-          <line x1="335" y1="432" x2="410" y2="432" stroke="#FFFFFF" strokeWidth="2.5" />
+          <line
+            x1="335"
+            y1="432"
+            x2="410"
+            y2="432"
+            stroke="#FFFFFF"
+            strokeWidth="2.5"
+          />
         </g>
       </svg>
     </div>
@@ -255,40 +287,31 @@ export const RSOfficialEmblem: React.FC<{
 };
 
 export const RSLogo: React.FC<RSLogoProps> = ({
-  className = '',
-  size = 'md',
+  className = "",
+  size = "md",
 }) => {
   const { customLogo } = useBrand();
 
   const imageSizeClasses = {
-    xs: 'h-7 max-w-[110px]',
-    sm: 'h-9 max-w-[150px]',
-    md: 'h-12 sm:h-14 max-w-[220px]',
-    lg: 'h-14 sm:h-16 max-w-[260px]',
-    xl: 'h-18 sm:h-22 max-w-[320px]',
-    '2xl': 'h-26 sm:h-30 max-w-[380px]',
+    xs: "h-7 max-w-[110px]",
+    sm: "h-9 max-w-[150px]",
+    md: "h-12 sm:h-14 max-w-[220px]",
+    lg: "h-14 sm:h-16 max-w-[260px]",
+    xl: "h-18 sm:h-22 max-w-[320px]",
+    "2xl": "h-26 sm:h-30 max-w-[380px]",
   };
 
-  // If user has custom logo set
-  if (customLogo) {
-    return (
-      <div className={`relative inline-flex items-center ${className}`}>
-        <div className="relative flex items-center justify-center shrink-0">
-          <img
-            src={customLogo}
-            alt="RS Higher Education Consultants"
-            className={`${imageSizeClasses[size]} w-auto object-contain select-none`}
-            referrerPolicy="no-referrer"
-          />
-        </div>
-      </div>
-    );
-  }
+  const logoSrc = customLogo || logoImg;
 
   return (
     <div className={`relative inline-flex items-center ${className}`}>
-      <div className="relative flex items-center justify-center">
-        <RSOfficialEmblem size={size} />
+      <div className="relative flex items-center justify-center shrink-0">
+        <img
+          src={logoSrc}
+          alt="RS Higher Education Consultants"
+          className={`${imageSizeClasses[size]} w-auto object-contain select-none`}
+          referrerPolicy="no-referrer"
+        />
       </div>
     </div>
   );
@@ -300,13 +323,12 @@ export const RSLogo: React.FC<RSLogoProps> = ({
 export const RSBrandShowcaseCard: React.FC<{
   className?: string;
   onOpenConsultation?: () => void;
-}> = ({ className = '', onOpenConsultation }) => {
+}> = ({ className = "", onOpenConsultation }) => {
   const { customShowcaseLogo } = useBrand();
 
   return (
     <div
-      className={`relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-slate-900 via-[#1A0303] to-slate-950 text-white border border-red-500/30 shadow-2xl shadow-red-950/40 overflow-hidden group font-poppins ${className}`}
-    >
+      className={`relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-slate-900 via-[#1A0303] to-slate-950 text-white border border-red-500/30 shadow-2xl shadow-red-950/40 overflow-hidden group font-poppins ${className}`}>
       {/* Ambient glowing radial flares */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#DB0303]/30 rounded-full blur-3xl pointer-events-none group-hover:bg-[#DB0303]/40 transition-all duration-700" />
       <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
@@ -325,7 +347,11 @@ export const RSBrandShowcaseCard: React.FC<{
                 />
               </div>
             ) : (
-              <RSOfficialEmblem size="xl" variant="circle" className="shadow-2xl rounded-full" />
+              <RSOfficialEmblem
+                size="xl"
+                variant="circle"
+                className="shadow-2xl rounded-full"
+              />
             )}
           </div>
 
@@ -351,7 +377,18 @@ export const RSBrandShowcaseCard: React.FC<{
               The Name of Trust, Integrity & Student Satisfaction
             </h3>
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-poppins font-normal">
-              At <strong className="text-white font-bold">RS Higher Education Consultants</strong>, our brand stands as a trusted beacon for thousands of ambitious students. We turn global study aspirations into real international admissions across <strong className="text-amber-300 font-semibold">16 world-leading destinations</strong> with absolute transparency, zero hidden clauses, and complete ethical commitment.
+              At{" "}
+              <strong className="text-white font-bold">
+                RS Higher Education Consultants
+              </strong>
+              , our brand stands as a trusted beacon for thousands of ambitious
+              students. We turn global study aspirations into real international
+              admissions across{" "}
+              <strong className="text-amber-300 font-semibold">
+                16 world-leading destinations
+              </strong>{" "}
+              with absolute transparency, zero hidden clauses, and complete
+              ethical commitment.
             </p>
           </div>
 
@@ -360,17 +397,22 @@ export const RSBrandShowcaseCard: React.FC<{
             <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-red-400/40 transition-colors">
               <div className="flex items-center gap-2 text-amber-400 mb-1">
                 <ShieldCheck className="w-4 h-4" />
-                <span className="text-xs font-bold font-poppins text-white">Unshakable Trust</span>
+                <span className="text-xs font-bold font-poppins text-white">
+                  Unshakable Trust
+                </span>
               </div>
               <p className="text-[11px] text-slate-300 font-poppins leading-snug">
-                100% genuine university representation & honest case assessments.
+                100% genuine university representation & honest case
+                assessments.
               </p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-red-400/40 transition-colors">
               <div className="flex items-center gap-2 text-amber-400 mb-1">
                 <Award className="w-4 h-4" />
-                <span className="text-xs font-bold font-poppins text-white">99% Visa Success</span>
+                <span className="text-xs font-bold font-poppins text-white">
+                  99% Visa Success
+                </span>
               </div>
               <p className="text-[11px] text-slate-300 font-poppins leading-snug">
                 Meticulous documentation & expert embassy interview coaching.
@@ -380,7 +422,9 @@ export const RSBrandShowcaseCard: React.FC<{
             <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-red-400/40 transition-colors">
               <div className="flex items-center gap-2 text-amber-400 mb-1">
                 <CheckCircle2 className="w-4 h-4" />
-                <span className="text-xs font-bold font-poppins text-white">Total Satisfaction</span>
+                <span className="text-xs font-bold font-poppins text-white">
+                  Total Satisfaction
+                </span>
               </div>
               <p className="text-[11px] text-slate-300 font-poppins leading-snug">
                 Students’ satisfaction remains our first and highest priority.
@@ -393,8 +437,7 @@ export const RSBrandShowcaseCard: React.FC<{
               <button
                 type="button"
                 onClick={onOpenConsultation}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#DB0303] to-red-600 hover:from-red-600 hover:to-[#DB0303] text-white font-bold text-xs sm:text-sm font-poppins shadow-lg shadow-red-900/40 hover:scale-105 transition-all cursor-pointer flex items-center gap-2"
-              >
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#DB0303] to-red-600 hover:from-red-600 hover:to-[#DB0303] text-white font-bold text-xs sm:text-sm font-poppins shadow-lg shadow-red-900/40 hover:scale-105 transition-all cursor-pointer flex items-center gap-2">
                 <span>Book Free Consultation</span>
                 <Sparkles className="w-4 h-4 text-amber-200" />
               </button>
@@ -408,4 +451,3 @@ export const RSBrandShowcaseCard: React.FC<{
     </div>
   );
 };
-

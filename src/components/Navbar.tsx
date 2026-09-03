@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { RSLogo } from "./RSLogo";
 import { CountryFlag } from "./CountryFlag";
 import { ALL_DESTINATIONS } from "../data/destinationsData";
+// logo
+import HeaderLogo from "../assets/images/logo.png";
 import {
   ChevronDown,
   Globe2,
@@ -68,7 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       }`}>
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Main Navbar */}
-        <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <div className="flex items-center justify-between  sm:gap-4">
           {/* Brand Logo */}
           <div className="flex items-center gap-2 shrink-0">
             <button
@@ -76,7 +77,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick("home")}
               className="text-left focus:outline-none rounded-lg py-0.5 transition-transform hover:scale-[1.01] cursor-pointer"
               title="RS Higher Education Consultants (Click to go Home)">
-              <RSLogo theme="light" size="md" variant="horizontal" />
+              <img
+                src={HeaderLogo}
+                alt="RS Higher Education Consultants"
+                className="h-8 xs:h-9 sm:h-11 md:h-12 lg:h-14 xl:h-16 w-auto max-w-[130px] sm:max-w-[180px] md:max-w-[220px] lg:max-w-none object-contain transition-all duration-300"
+              />
             </button>
           </div>
 
@@ -205,13 +210,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Action CTAs & Mobile Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button
+            {/* <button
               id="header-apply-btn"
               onClick={() => handleNavClick("finder")}
               className="hidden md:inline-flex px-2.5 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold text-[#DB0303] bg-red-50 hover:bg-red-100/80 border border-red-200 rounded-xl transition-all font-heading items-center gap-1 cursor-pointer shadow-2xs">
               <GraduationCap className="w-3.5 h-3.5" />
               <span>Course Finder</span>
-            </button>
+            </button> */}
             <button
               id="header-consultation-btn"
               onClick={onOpenConsultation}
