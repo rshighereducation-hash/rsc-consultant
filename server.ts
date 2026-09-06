@@ -4,6 +4,7 @@ import { createServer as createViteServer } from "vite";
 
 async function startServer() {
   const app = express();
+  //add the process.env.port for Hostinger
   const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json());
