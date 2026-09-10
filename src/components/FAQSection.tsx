@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/businessInfo';
 import { useBrand } from '../context/BrandContext';
-import defaultFaqImg from '../assets/images/rahmat_shah_graduation_faq_1787903563254.jpg';
+import defaultFaqImg from '../assets/images/faq.jpeg';
 import { RSOfficialEmblem } from './RSLogo';
 import { WhatsAppIcon } from './WhatsAppIcon';
 

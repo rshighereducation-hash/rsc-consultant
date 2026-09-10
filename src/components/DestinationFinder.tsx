@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent } from 'react';
 import { ALL_DESTINATIONS } from '../data/destinationsData';
 import { useBrand } from '../context/BrandContext';
-import defaultStudentImg from '../assets/images/international_students_banner_1787512603696.jpg';
+import defaultStudentImg from '../assets/images/coursefind.jpeg';
 import {
   Compass,
   Sparkles,

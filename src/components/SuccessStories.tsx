@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, ChangeEvent } from 'react';
 import { TESTIMONIALS_DATA } from '../data/testimonialsData';
 import { CountryFlag } from './CountryFlag';
 import { useBrand } from '../context/BrandContext';
-import defaultSuccessImg from '../assets/images/female_graduates_full_1787513525290.jpg';
+import defaultSuccessImg from '../assets/images/succes.png';
 import { RSOfficialEmblem } from './RSLogo';
 import {
   Quote,
