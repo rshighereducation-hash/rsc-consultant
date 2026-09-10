@@ -1,6 +1,7 @@
 import React, { useState, useRef, ChangeEvent, DragEvent } from 'react';
 import { CountryFlag } from './CountryFlag';
 import { useBrand } from '../context/BrandContext';
+import HamzaImage from '../assets/images/Hamza.jpeg';
 import {
   ArrowRight,
   Globe2,
@@ -88,9 +89,11 @@ export const Hero: React.FC<HeroProps> = ({
   const heroFileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const defaultHeroImage =
-    'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop';
-  const activeHeroImage = customHeroPhoto || defaultHeroImage;
+  // const defaultHeroImage =
+  //   'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop';
+  // const activeHeroImage = customHeroPhoto || defaultHeroImage;
+  const defaultHeroImage = HamzaImage;
+const activeHeroImage = customHeroPhoto || defaultHeroImage;
 
   const handleHeroFileDirect = (file: File) => {
     if (!file.type.startsWith('image/')) return;
