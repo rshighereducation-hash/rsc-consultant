@@ -3,7 +3,7 @@ import { SERVICES_DATA } from '../data/servicesData';
 import { ServiceItem } from '../types';
 import { useBrand } from '../context/BrandContext';
 import { RSLogo, RSOfficialEmblem } from './RSLogo';
-import defaultServicesImg from '../assets/images/pakistani_students_attractive_1787568393375.jpg';
+import defaultServicesImg from '../assets/images/student.jpeg';
 import {
   Compass,
   Building2,
