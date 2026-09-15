@@ -1,9 +1,59 @@
 # RS Higher Education Consultants - Apache Configuration for Hostinger SPA Deployment
+# Routes: / /about /destinations /destinations/* /services /universities
+#         /course-finder /student-success /resources /faq /contact
+
+# ─── 1. Force HTTPS ──────────────────────────────────────────────────────────
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Redirect HTTP → HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Redirect www → non-www  (change to non-www → www if preferred)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # ─── 2. SPA Fallback – send all unknown routes to index.html ─────────────
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
+</IfModule>
+
+# ─── 3. Correct MIME Types ───────────────────────────────────────────────────
+<IfModule mod_mime.c>
+  AddType application/javascript    .js .mjs
+  AddType text/css                  .css
+  AddType image/svg+xml             .svg
+  AddType image/webp                .webp
+  AddType application/manifest+json .webmanifest
+  AddType font/woff2                .woff2
+  AddType font/woff                 .woff
+</IfModule>
+
+# ─── 4. GZIP Compression ─────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml font/woff2 font/woff
+</IfModule>
+
+# ─── 5. Browser Caching ──────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Hashed JS/CSS bundles – cache 1 year
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css               "access plus 1 year"
+  # Images – cache 1 month
+  ExpiresByType image/png              "access plus 1 month"
+  ExpiresByType image/jpeg             "access plus 1 month"
+  ExpiresByType image/webp             "access plus 1 month"
+  ExpiresByType image/svg+xml          "access plus 1 month"
+  # Fonts – cache 1 year
+  ExpiresByType font/woff2             "access plus 1 year"
+  ExpiresByType font/woff              "access plus 1 year"
+  # HTML (index.html) – no cache so updates propagate immediately
+  ExpiresByType text/html              "access plus 0 seconds"
 </IfModule>

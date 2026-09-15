@@ -1,14 +1,27 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
+// import nodemailer for email
+import nodemailer from "nodemailer";
+import "dotenv/config";
 
 async function startServer() {
   const app = express();
   //add the process.env.port for Hostinger
   const PORT = Number(process.env.PORT) || 3000;
+  // for email SMTP
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT || 465),
+    secure: Number(process.env.SMTP_PORT || 465) === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
   // API Routes
   app.get("/api/health", (_req, res) => {
@@ -106,7 +119,7 @@ Your objective:
   const storedLeads: any[] = [];
 
   // Lead Generation / Contact submission endpoint
-  app.post("/api/contact", (req, res) => {
+  app.post("/api/contact", async (req, res) => {
     try {
       const {
         applicationId,
@@ -124,6 +137,9 @@ Your objective:
         budget,
         ieltsStatus,
         message,
+        hearAboutUs,
+        pdfBase64,
+        pdfFileName,
       } = req.body;
 
       if (!fullName || !phone) {
@@ -157,6 +173,47 @@ Your objective:
       };
 
       storedLeads.unshift(leadData);
+      // for pdf to email
+
+      try {
+        await transporter.sendMail({
+          from: process.env.SMTP_USER,
+          to: process.env.BUSINESS_EMAIL,
+          subject: `New Student Inquiry - ${fullName}`,
+
+          text: `
+New student inquiry received.
+
+Name: ${fullName}
+Mobile: ${phone}
+Email: ${email || ""}
+City: ${city || ""}
+Destination: ${destination || ""}
+Course: ${course || ""}
+Intake: ${targetIntake || intake || ""}
+English Test: ${ieltsStatus || ""}
+How Did You Hear About Us: ${hearAboutUs || ""}
+Reference: ${applicationId || ""}
+
+Message:
+${message || ""}
+`,
+
+          attachments: pdfBase64
+            ? [
+                {
+                  filename: pdfFileName || `RS_Inquiry_Form_${fullName}.pdf`,
+                  content: Buffer.from(pdfBase64, "base64"),
+                  contentType: "application/pdf",
+                },
+              ]
+            : [],
+        });
+
+        console.log("Student inquiry email sent successfully.");
+      } catch (emailError) {
+        console.error("Email sending failed:", emailError);
+      }
 
       // Log lead safely for backend tracking (routed to business email info@rshec.pk)
       console.log(" [RS HEC Lead Received]", JSON.stringify(leadData, null, 2));

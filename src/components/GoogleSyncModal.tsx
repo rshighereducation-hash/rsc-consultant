@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleIntegrationService, USER_LINKED_SPREADSHEET_URL, StudentLeadPayload } from '../services/googleIntegration';
-import { PdfGenerationService } from '../services/pdfService';
-import { WhatsAppIcon } from './WhatsAppIcon';
+import React, { useState, useEffect } from "react";
+import {
+  GoogleIntegrationService,
+  USER_LINKED_SPREADSHEET_URL,
+  StudentLeadPayload,
+} from "../services/googleIntegration";
+import { PdfGenerationService } from "../services/pdfService";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 import {
   FileSpreadsheet,
   Mail,
@@ -20,23 +24,28 @@ import {
   Phone,
   HelpCircle,
   Clock,
-  FileText
-} from 'lucide-react';
+  FileText,
+} from "lucide-react";
 
 interface GoogleSyncModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClose }) => {
-  const [activeTab, setActiveTab] = useState<'auth' | 'webhook' | 'leads'>('auth');
+export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [activeTab, setActiveTab] = useState<"auth" | "webhook" | "leads">(
+    "auth",
+  );
   const [isConnected, setIsConnected] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [spreadsheetUrl, setSpreadsheetUrl] = useState<string | null>(null);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [leads, setLeads] = useState<any[]>([]);
-  const [webhookUrlInput, setWebhookUrlInput] = useState('');
+  const [webhookUrlInput, setWebhookUrlInput] = useState("");
   const [copiedScript, setCopiedScript] = useState(false);
   const [savedWebhookSuccess, setSavedWebhookSuccess] = useState(false);
 
@@ -54,9 +63,11 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
     const localLeads = GoogleIntegrationService.getLocalLeads();
     setLeads(localLeads);
 
-    const sheetId = localStorage.getItem('rs_leads_spreadsheet_id_v1');
+    const sheetId = localStorage.getItem("rs_leads_spreadsheet_id_v1");
     if (sheetId) {
-      setSpreadsheetUrl(`https://docs.google.com/spreadsheets/d/${sheetId}/edit`);
+      setSpreadsheetUrl(
+        `https://docs.google.com/spreadsheets/d/${sheetId}/edit`,
+      );
     } else {
       setSpreadsheetUrl(USER_LINKED_SPREADSHEET_URL);
     }
@@ -70,21 +81,32 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
   const handleConnectGoogle = async () => {
     setIsAuthenticating(true);
     setErrorMsg(null);
-    setStatusMsg('Opening Google sign-in window for rshighereducation@gmail.com...');
+    setStatusMsg(
+      "Opening Google sign-in window for rshighereducation@gmail.com...",
+    );
 
     try {
-      const token = await GoogleIntegrationService.requestGoogleAuth('rshighereducation@gmail.com');
+      const token = await GoogleIntegrationService.requestGoogleAuth(
+        "rshighereducation@gmail.com",
+      );
       setIsConnected(true);
-      setStatusMsg('Google authorization granted! Generating student leads sheet...');
+      setStatusMsg(
+        "Google authorization granted! Generating student leads sheet...",
+      );
 
       // Initialize spreadsheet
-      const sheetId = await GoogleIntegrationService.getOrCreateSpreadsheet(token);
+      const sheetId =
+        await GoogleIntegrationService.getOrCreateSpreadsheet(token);
       const url = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
       setSpreadsheetUrl(url);
-      setStatusMsg('Connected! All form inquiries now sync to Google Sheets & Gmail.');
+      setStatusMsg(
+        "Connected! All form inquiries now sync to Google Sheets & Gmail.",
+      );
     } catch (err: any) {
-      console.error('Google Auth Error:', err);
-      setErrorMsg(err.message || 'Connecting was interrupted or popup was closed.');
+      console.error("Google Auth Error:", err);
+      setErrorMsg(
+        err.message || "Connecting was interrupted or popup was closed.",
+      );
       setStatusMsg(null);
     } finally {
       setIsAuthenticating(false);
@@ -94,7 +116,9 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
   const handleCancelConnecting = () => {
     setIsAuthenticating(false);
     setStatusMsg(null);
-    setErrorMsg('Connecting canceled. If your browser blocked popups, please click "Authorize" again and allow popups in your URL bar.');
+    setErrorMsg(
+      'Connecting canceled. If your browser blocked popups, please click "Authorize" again and allow popups in your URL bar.',
+    );
   };
 
   const [testingWebhook, setTestingWebhook] = useState(false);
@@ -105,27 +129,33 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
     setTestLeadResult(null);
     try {
       const testLead: StudentLeadPayload = {
-        fullName: 'Test Student (RS Verification)',
-        email: 'rshighereducation@gmail.com',
-        phone: '+92 334 4626284',
-        city: 'Peshawar',
-        destination: 'United Kingdom',
-        studyLevel: 'Postgraduate / Master',
-        targetIntake: 'September 2026',
-        ieltsStatus: '6.5 (Verified)',
-        academicBackground: 'BSc Computer Science (3.6 CGPA)',
-        message: 'This is an automated test lead from RS Higher Education Consultants website to verify your Google Sheet and Email connection with attached official Inquiry Form PDF.',
-        submittedAt: new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }),
+        fullName: "Test Student (RS Verification)",
+        email: "rshighereducation@gmail.com",
+        phone: "+92 334 4626284",
+        city: "Peshawar",
+        destination: "United Kingdom",
+        studyLevel: "Postgraduate / Master",
+        targetIntake: "September 2026",
+        ieltsStatus: "6.5 (Verified)",
+        academicBackground: "BSc Computer Science (3.6 CGPA)",
+        message:
+          "This is an automated test lead from RS Higher Education Consultants website to verify your Google Sheet and Email connection with attached official Inquiry Form PDF.",
+        submittedAt: new Date().toLocaleString("en-GB", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }),
       };
 
       // Generate Test PDF Base64
       try {
-        const doc = PdfGenerationService.generateApplicationPdf(testLead as any);
-        const dataUri = doc.output('datauristring');
-        testLead.pdfBase64 = dataUri.split(',')[1] || '';
-        testLead.pdfFileName = 'RS_Inquiry_Form_Test_Student.pdf';
+        const doc = PdfGenerationService.generateApplicationPdf(
+          testLead as any,
+        );
+        const dataUri = doc.output("datauristring");
+        testLead.pdfBase64 = dataUri.split(",")[1] || "";
+        testLead.pdfFileName = "RS_Inquiry_Form_Test_Student.pdf";
       } catch (pdfErr) {
-        console.warn('Test PDF base64 generation notice:', pdfErr);
+        console.warn("Test PDF base64 generation notice:", pdfErr);
       }
 
       // Save locally
@@ -133,20 +163,37 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
       setLeads(GoogleIntegrationService.getLocalLeads());
 
       // Send to webhook if set
-      const webhookSent = await GoogleIntegrationService.sendToWebhook(testLead);
+      const webhookSent =
+        await GoogleIntegrationService.sendToWebhook(testLead);
 
       const token = GoogleIntegrationService.getAccessToken();
+      let sheetError: string | null = null;
       if (token) {
-        await GoogleIntegrationService.appendToGoogleSheet(token, testLead as any).catch(() => {});
+        try {
+          await GoogleIntegrationService.appendToGoogleSheet(
+            token,
+            testLead as any,
+          );
+        } catch (error: any) {
+          sheetError = error?.message || "Google Sheet update failed.";
+        }
       }
 
-      if (webhookSent || token) {
-        setTestLeadResult('✅ Test lead + Attached PDF sent! Check row in Google Sheet and attached PDF in inbox.');
+      if (sheetError) {
+        setTestLeadResult(`⚠️ ${sheetError}`);
+      } else if (webhookSent || token) {
+        setTestLeadResult(
+          "✅ Test lead + Attached PDF sent! Check row in Google Sheet and attached PDF in inbox.",
+        );
       } else {
-        setTestLeadResult('✅ Test lead recorded locally! (Paste Webhook URL below to sync to your Google Sheet automatically).');
+        setTestLeadResult(
+          "✅ Test lead recorded locally! (Paste Webhook URL below to sync to your Google Sheet automatically).",
+        );
       }
     } catch (e: any) {
-      setTestLeadResult('⚠️ Error sending test: ' + (e?.message || 'Unknown error'));
+      setTestLeadResult(
+        "⚠️ Error sending test: " + (e?.message || "Unknown error"),
+      );
     } finally {
       setTestingWebhook(false);
     }
@@ -155,7 +202,7 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
   const handleDisconnect = () => {
     GoogleIntegrationService.disconnect();
     setIsConnected(false);
-    setStatusMsg('Disconnected from Google Workspace.');
+    setStatusMsg("Disconnected from Google Workspace.");
   };
 
   const handleSaveWebhook = (e: React.FormEvent) => {
@@ -283,16 +330,14 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
   return (
     <div
       id="google-sync-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto"
-    >
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
       <div className="relative w-full max-w-2xl my-6 bg-white rounded-3xl shadow-2xl border border-red-100 overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-5 sm:p-6 relative shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
-            aria-label="Close"
-          >
+            aria-label="Close">
             <X className="w-5 h-5" />
           </button>
 
@@ -311,44 +356,44 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
             </div>
           </div>
           <p className="text-xs text-slate-300 mt-1">
-            Target Official Email: <strong className="text-amber-300 font-bold">rshighereducation@gmail.com</strong>
+            Target Official Email:{" "}
+            <strong className="text-amber-300 font-bold">
+              rshighereducation@gmail.com
+            </strong>
           </p>
 
           {/* Navigation Tabs */}
           <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-700/60 overflow-x-auto text-xs">
             <button
               type="button"
-              onClick={() => setActiveTab('auth')}
+              onClick={() => setActiveTab("auth")}
               className={`px-3 py-1.5 rounded-xl font-bold font-heading transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'auth'
-                  ? 'bg-[#DB0303] text-white shadow-xs'
-                  : 'bg-white/10 text-slate-300 hover:bg-white/20'
-              }`}
-            >
+                activeTab === "auth"
+                  ? "bg-[#DB0303] text-white shadow-xs"
+                  : "bg-white/10 text-slate-300 hover:bg-white/20"
+              }`}>
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Google Account Link</span>
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('leads')}
+              onClick={() => setActiveTab("leads")}
               className={`px-3 py-1.5 rounded-xl font-bold font-heading transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'leads'
-                  ? 'bg-[#DB0303] text-white shadow-xs'
-                  : 'bg-white/10 text-slate-300 hover:bg-white/20'
-              }`}
-            >
+                activeTab === "leads"
+                  ? "bg-[#DB0303] text-white shadow-xs"
+                  : "bg-white/10 text-slate-300 hover:bg-white/20"
+              }`}>
               <Database className="w-3.5 h-3.5" />
               <span>View All Leads ({leads.length})</span>
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('webhook')}
+              onClick={() => setActiveTab("webhook")}
               className={`px-3 py-1.5 rounded-xl font-bold font-heading transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                activeTab === 'webhook'
-                  ? 'bg-[#DB0303] text-white shadow-xs'
-                  : 'bg-white/10 text-slate-300 hover:bg-white/20'
-              }`}
-            >
+                activeTab === "webhook"
+                  ? "bg-[#DB0303] text-white shadow-xs"
+                  : "bg-white/10 text-slate-300 hover:bg-white/20"
+              }`}>
               <LinkIcon className="w-3.5 h-3.5" />
               <span>Google Apps Script Webhook</span>
             </button>
@@ -358,16 +403,15 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
         {/* Tab Content Area (Scrollable) */}
         <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
           {/* TAB 1: Google Account Link */}
-          {activeTab === 'auth' && (
+          {activeTab === "auth" && (
             <div className="space-y-5">
               {/* Status banner */}
               <div
                 className={`p-4 rounded-2xl border flex items-start gap-3 text-xs ${
                   isConnected
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
-                    : 'bg-amber-50 border-amber-200 text-amber-900'
-                }`}
-              >
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                    : "bg-amber-50 border-amber-200 text-amber-900"
+                }`}>
                 {isConnected ? (
                   <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 ) : (
@@ -376,13 +420,13 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                 <div className="space-y-1">
                   <span className="font-extrabold block text-sm">
                     {isConnected
-                      ? 'Google Workspace Connected & Active'
-                      : 'Authorize rshighereducation@gmail.com'}
+                      ? "Google Workspace Connected & Active"
+                      : "Authorize rshighereducation@gmail.com"}
                   </span>
                   <p className="leading-relaxed">
                     {isConnected
-                      ? 'Every student inquiry from all forms automatically creates a row in your Google Drive spreadsheet and sends an email to rshighereducation@gmail.com.'
-                      : 'Click the button below to authorize. If your browser blocks popups, make sure to allow popups in your browser address bar.'}
+                      ? "Every student inquiry from all forms automatically creates a row in your Google Drive spreadsheet and sends an email to rshighereducation@gmail.com."
+                      : "Click the button below to authorize. If your browser blocks popups, make sure to allow popups in your browser address bar."}
                   </p>
                 </div>
               </div>
@@ -395,13 +439,14 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                     <span>Google Authorization Popup is Open</span>
                   </div>
                   <p className="text-[11px] text-blue-800 leading-relaxed">
-                    Please check your browser pop-up window (or browser tabs) to select <strong>rshighereducation@gmail.com</strong> and click <strong>Allow</strong>.
+                    Please check your browser pop-up window (or browser tabs) to
+                    select <strong>rshighereducation@gmail.com</strong> and
+                    click <strong>Allow</strong>.
                   </p>
                   <button
                     type="button"
                     onClick={handleCancelConnecting}
-                    className="mt-1 px-3 py-1.5 bg-white border border-blue-300 text-blue-800 text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors cursor-pointer"
-                  >
+                    className="mt-1 px-3 py-1.5 bg-white border border-blue-300 text-blue-800 text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
                     Cancel / Stop Connecting
                   </button>
                 </div>
@@ -430,8 +475,12 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                       <FileSpreadsheet className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-black text-slate-900 font-heading">Google Sheet</h4>
-                      <span className="text-[10px] text-slate-500">Live Google Drive Sheet</span>
+                      <h4 className="text-xs font-black text-slate-900 font-heading">
+                        Google Sheet
+                      </h4>
+                      <span className="text-[10px] text-slate-500">
+                        Live Google Drive Sheet
+                      </span>
                     </div>
                   </div>
                   {spreadsheetUrl ? (
@@ -439,8 +488,7 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                       href={spreadsheetUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-1.5 transition-all shadow-xs"
-                    >
+                      className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-1.5 transition-all shadow-xs">
                       <span>Open Google Sheet</span>
                       <ExternalLink className="w-3 h-3" />
                     </a>
@@ -449,8 +497,7 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                       type="button"
                       onClick={handleConnectGoogle}
                       disabled={isAuthenticating}
-                      className="w-full py-2.5 px-3 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold font-heading transition-colors"
-                    >
+                      className="w-full py-2.5 px-3 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold font-heading transition-colors">
                       Authorize to Generate Sheet
                     </button>
                   )}
@@ -463,15 +510,18 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                       <Download className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-black text-slate-900 font-heading">Excel File (.csv)</h4>
-                      <span className="text-[10px] text-slate-500">{leads.length} recorded leads</span>
+                      <h4 className="text-xs font-black text-slate-900 font-heading">
+                        Excel File (.csv)
+                      </h4>
+                      <span className="text-[10px] text-slate-500">
+                        {leads.length} recorded leads
+                      </span>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={handleDownloadExcel}
-                    className="w-full py-2.5 px-3 bg-[#DB0303] hover:bg-[#B30000] text-white rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                  >
+                    className="w-full py-2.5 px-3 bg-[#DB0303] hover:bg-[#B30000] text-white rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
                     <Download className="w-3.5 h-3.5" />
                     <span>Download Excel Sheet</span>
                   </button>
@@ -482,11 +532,20 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
               <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 text-[11px] text-slate-600 flex items-start gap-2.5">
                 <HelpCircle className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <span className="font-bold text-slate-800">What to do if connecting keeps loading:</span>
+                  <span className="font-bold text-slate-800">
+                    What to do if connecting keeps loading:
+                  </span>
                   <p>
-                    1. Check your browser address bar for a <strong>"Pop-up blocked"</strong> icon and click <strong>Always Allow</strong>.<br />
-                    2. If you are in preview mode, click the <strong>Open in new window</strong> icon at the top right of your browser.<br />
-                    3. You can also view and export all incoming student leads directly from the <strong>"View All Leads"</strong> tab or use the <strong>"Google Apps Script Webhook"</strong>!
+                    1. Check your browser address bar for a{" "}
+                    <strong>"Pop-up blocked"</strong> icon and click{" "}
+                    <strong>Always Allow</strong>.<br />
+                    2. If you are in preview mode, click the{" "}
+                    <strong>Open in new window</strong> icon at the top right of
+                    your browser.
+                    <br />
+                    3. You can also view and export all incoming student leads
+                    directly from the <strong>"View All Leads"</strong> tab or
+                    use the <strong>"Google Apps Script Webhook"</strong>!
                   </p>
                 </div>
               </div>
@@ -498,8 +557,7 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                     type="button"
                     onClick={handleConnectGoogle}
                     disabled={isAuthenticating}
-                    className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white text-xs font-black rounded-xl font-heading shadow-md shadow-red-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                  >
+                    className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white text-xs font-black rounded-xl font-heading shadow-md shadow-red-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
                     {isAuthenticating ? (
                       <RefreshCw className="w-4 h-4 animate-spin" />
                     ) : (
@@ -512,16 +570,14 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                     <button
                       type="button"
                       onClick={handleConnectGoogle}
-                      className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors font-heading cursor-pointer flex items-center gap-1"
-                    >
+                      className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors font-heading cursor-pointer flex items-center gap-1">
                       <RefreshCw className="w-3.5 h-3.5" />
                       <span>Refresh Token</span>
                     </button>
                     <button
                       type="button"
                       onClick={handleDisconnect}
-                      className="px-4 py-2.5 text-xs text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium cursor-pointer"
-                    >
+                      className="px-4 py-2.5 text-xs text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium cursor-pointer">
                       Disconnect
                     </button>
                   </div>
@@ -531,7 +587,7 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
           )}
 
           {/* TAB 2: View All Inquiries Table */}
-          {activeTab === 'leads' && (
+          {activeTab === "leads" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -539,14 +595,14 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                     Submitted Inquiries ({leads.length})
                   </h4>
                   <p className="text-[11px] text-slate-500">
-                    Real-time list of student submissions recorded across all forms.
+                    Real-time list of student submissions recorded across all
+                    forms.
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={handleDownloadExcel}
-                  className="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold font-heading flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
-                >
+                  className="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold font-heading flex items-center gap-1.5 transition-all shadow-xs cursor-pointer">
                   <Download className="w-3.5 h-3.5" />
                   <span>Download Excel (.csv)</span>
                 </button>
@@ -555,9 +611,12 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
               {leads.length === 0 ? (
                 <div className="text-center py-12 px-4 bg-slate-50 rounded-2xl border border-dashed border-slate-300 text-slate-500 text-xs">
                   <FileSpreadsheet className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                  <p className="font-bold text-slate-700">No student inquiries submitted yet</p>
+                  <p className="font-bold text-slate-700">
+                    No student inquiries submitted yet
+                  </p>
                   <p className="text-[11px] text-slate-500 mt-1">
-                    Fill in the contact form or degree finder on the website to test a submission!
+                    Fill in the contact form or degree finder on the website to
+                    test a submission!
                   </p>
                 </div>
               ) : (
@@ -576,7 +635,9 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
                       {leads.map((lead, idx) => (
-                        <tr key={lead.id || idx} className="hover:bg-slate-50/80 transition-colors">
+                        <tr
+                          key={lead.id || idx}
+                          className="hover:bg-slate-50/80 transition-colors">
                           <td className="p-3 whitespace-nowrap text-slate-500 text-[11px]">
                             {lead.submittedAt}
                           </td>
@@ -584,7 +645,9 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                             {lead.fullName}
                           </td>
                           <td className="p-3 whitespace-nowrap">
-                            <span className="font-mono text-slate-700">{lead.phone}</span>
+                            <span className="font-mono text-slate-700">
+                              {lead.phone}
+                            </span>
                           </td>
                           <td className="p-3 whitespace-nowrap text-slate-600">
                             {lead.email}
@@ -600,21 +663,23 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                           <td className="p-3 whitespace-nowrap">
                             <div className="flex items-center gap-1.5">
                               <a
-                                href={`https://wa.me/${(lead.phone || '').replace(/[^0-9]/g, '')}?text=${PdfGenerationService.getWhatsAppDossierMessage(lead)}`}
+                                href={`https://wa.me/${(lead.phone || "").replace(/[^0-9]/g, "")}?text=${PdfGenerationService.getWhatsAppDossierMessage(lead)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="px-2.5 py-1 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-lg font-bold text-[11px] inline-flex items-center gap-1 transition-colors shadow-xs"
-                                title="Chat on WhatsApp with pre-filled dossier"
-                              >
+                                title="Chat on WhatsApp with pre-filled dossier">
                                 <WhatsAppIcon className="w-3 h-3" />
                                 <span>WhatsApp</span>
                               </a>
                               <button
                                 type="button"
-                                onClick={() => PdfGenerationService.downloadApplicationPdf(lead)}
+                                onClick={() =>
+                                  PdfGenerationService.downloadApplicationPdf(
+                                    lead,
+                                  )
+                                }
                                 className="px-2.5 py-1 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold text-[11px] inline-flex items-center gap-1 transition-colors cursor-pointer"
-                                title="Download Official PDF Application Dossier"
-                              >
+                                title="Download Official PDF Application Dossier">
                                 <FileText className="w-3 h-3 text-red-400" />
                                 <span>PDF</span>
                               </button>
@@ -630,38 +695,44 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
           )}
 
           {/* TAB 3: Google Apps Script Webhook Setup */}
-          {activeTab === 'webhook' && (
+          {activeTab === "webhook" && (
             <div className="space-y-4 text-xs">
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
                 <span className="font-bold text-slate-900 block text-sm font-heading">
                   100% Zero-Login Google Sheet Auto-Sync (Webhook)
                 </span>
                 <p className="text-slate-600 leading-relaxed text-[11px]">
-                  If you do not want to use OAuth popups, you can attach a free Google Apps Script to any Google Sheet. All website submissions will automatically append new rows directly into your spreadsheet!
+                  If you do not want to use OAuth popups, you can attach a free
+                  Google Apps Script to any Google Sheet. All website
+                  submissions will automatically append new rows directly into
+                  your spreadsheet!
                 </p>
               </div>
 
               {/* Direct Link to Sheet */}
               <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <span className="font-bold text-emerald-900 text-xs block">Active Google Sheet:</span>
+                  <span className="font-bold text-emerald-900 text-xs block">
+                    Active Google Sheet:
+                  </span>
                   <p className="text-[11px] text-emerald-700 font-mono break-all">
-                    https://docs.google.com/spreadsheets/d/1M0y6rCtpurzZsYTlAc-tMFVo6V7AGkFEM47pNmj0eMI
+                    {spreadsheetUrl || USER_LINKED_SPREADSHEET_URL}
                   </p>
                 </div>
                 <a
-                  href="https://docs.google.com/spreadsheets/d/1M0y6rCtpurzZsYTlAc-tMFVo6V7AGkFEM47pNmj0eMI/edit?usp=sharing"
+                  href={spreadsheetUrl || USER_LINKED_SPREADSHEET_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-1.5 transition-all shadow-xs shrink-0"
-                >
+                  className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-1.5 transition-all shadow-xs shrink-0">
                   <span>Open Sheet</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
 
               {/* Webhook URL input form */}
-              <form onSubmit={handleSaveWebhook} className="space-y-3 bg-white p-4 rounded-2xl border border-slate-200">
+              <form
+                onSubmit={handleSaveWebhook}
+                className="space-y-3 bg-white p-4 rounded-2xl border border-slate-200">
                 <label className="block font-bold text-slate-800 text-xs">
                   Your Google Apps Script Webhook URL:
                 </label>
@@ -675,14 +746,14 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2.5 bg-[#DB0303] hover:bg-[#B30000] text-white font-bold rounded-xl text-xs transition-colors cursor-pointer shrink-0"
-                  >
+                    className="px-4 py-2.5 bg-[#DB0303] hover:bg-[#B30000] text-white font-bold rounded-xl text-xs transition-colors cursor-pointer shrink-0">
                     Save Webhook
                   </button>
                 </div>
                 {savedWebhookSuccess && (
                   <p className="text-emerald-600 text-xs font-bold flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5" /> Webhook URL saved successfully!
+                    <Check className="w-3.5 h-3.5" /> Webhook URL saved
+                    successfully!
                   </p>
                 )}
               </form>
@@ -691,17 +762,27 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h5 className="font-bold text-slate-800 text-xs font-heading">Test Google Sheet Live Sync</h5>
-                    <p className="text-[11px] text-slate-500">Send a sample verified inquiry to test your sheet and email notifications.</p>
+                    <h5 className="font-bold text-slate-800 text-xs font-heading">
+                      Test Google Sheet Live Sync
+                    </h5>
+                    <p className="text-[11px] text-slate-500">
+                      Send a sample verified inquiry to test your sheet and
+                      email notifications.
+                    </p>
                   </div>
                   <button
                     type="button"
                     onClick={handleSendTestLead}
                     disabled={testingWebhook}
-                    className="px-3.5 py-2 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 shadow-xs"
-                  >
-                    {testingWebhook ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5 text-amber-300" />}
-                    <span>{testingWebhook ? 'Sending Test...' : 'Send Test Lead'}</span>
+                    className="px-3.5 py-2 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 shadow-xs">
+                    {testingWebhook ? (
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    )}
+                    <span>
+                      {testingWebhook ? "Sending Test..." : "Send Test Lead"}
+                    </span>
                   </button>
                 </div>
                 {testLeadResult && (
@@ -714,14 +795,20 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
               {/* Ready-to-copy code */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-700 text-[11px]">Google Apps Script Code (Copy &amp; Paste in Extensions → Apps Script):</span>
+                  <span className="font-bold text-slate-700 text-[11px]">
+                    Google Apps Script Code (Copy &amp; Paste in Extensions →
+                    Apps Script):
+                  </span>
                   <button
                     type="button"
                     onClick={copyAppsScript}
-                    className="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                  >
-                    {copiedScript ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedScript ? 'Copied!' : 'Copy Code'}</span>
+                    className="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer">
+                    {copiedScript ? (
+                      <Check className="w-3 h-3 text-emerald-600" />
+                    ) : (
+                      <Copy className="w-3 h-3" />
+                    )}
+                    <span>{copiedScript ? "Copied!" : "Copy Code"}</span>
                   </button>
                 </div>
                 <pre className="p-3 bg-slate-900 text-slate-200 rounded-xl text-[10px] font-mono overflow-x-auto max-h-36">
@@ -740,8 +827,7 @@ export const GoogleSyncModal: React.FC<GoogleSyncModalProps> = ({ isOpen, onClos
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200/80 rounded-xl transition-colors font-heading cursor-pointer"
-          >
+            className="px-5 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200/80 rounded-xl transition-colors font-heading cursor-pointer">
             Close
           </button>
         </div>

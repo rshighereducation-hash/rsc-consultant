@@ -1,9 +1,9 @@
-import React, { useState, useRef, ChangeEvent } from 'react';
-import { SERVICES_DATA } from '../data/servicesData';
-import { ServiceItem } from '../types';
-import { useBrand } from '../context/BrandContext';
-import { RSLogo, RSOfficialEmblem } from './RSLogo';
-import defaultServicesImg from '../assets/images/student.jpeg';
+import React, { useState, useRef, ChangeEvent } from "react";
+import { SERVICES_DATA } from "../data/servicesData";
+import { ServiceItem } from "../types";
+import { useBrand } from "../context/BrandContext";
+import { RSLogo, RSOfficialEmblem } from "./RSLogo";
+import defaultServicesImg from "../assets/images/student.jpeg";
 import {
   Compass,
   Building2,
@@ -27,8 +27,8 @@ import {
   Clock,
   BookOpen,
   Laptop,
-  Image as ImageIcon
-} from 'lucide-react';
+  Image as ImageIcon,
+} from "lucide-react";
 
 const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Compass,
@@ -68,21 +68,25 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   const laptopLogoInputRef = useRef<HTMLInputElement>(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
 
-  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
-  const [activeCategory, setActiveCategory] = useState<'all' | 'admissions' | 'visa' | 'departure'>('all');
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(
+    null,
+  );
+  const [activeCategory, setActiveCategory] = useState<
+    "all" | "admissions" | "visa" | "departure"
+  >("all");
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Direct quick file upload handler for banner image
   const handleQuickUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (!file.type.startsWith('image/')) return;
+      if (!file.type.startsWith("image/")) return;
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
         const img = new Image();
         img.onload = () => {
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           const maxDimension = 1600;
           let width = img.width;
           let height = img.height;
@@ -97,10 +101,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           }
           canvas.width = width;
           canvas.height = height;
-          const ctx = canvas.getContext('2d');
+          const ctx = canvas.getContext("2d");
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            const optimizedJpg = canvas.toDataURL('image/jpeg', 0.9);
+            const optimizedJpg = canvas.toDataURL("image/jpeg", 0.9);
             setCustomServicesBanner(optimizedJpg);
           } else {
             setCustomServicesBanner(result);
@@ -116,13 +120,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   const handleLaptopLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (!file.type.startsWith('image/')) return;
+      if (!file.type.startsWith("image/")) return;
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
         const img = new Image();
         img.onload = () => {
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           const maxDimension = 800;
           let width = img.width;
           let height = img.height;
@@ -137,10 +141,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           }
           canvas.width = width;
           canvas.height = height;
-          const ctx = canvas.getContext('2d');
+          const ctx = canvas.getContext("2d");
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            const optimizedPng = canvas.toDataURL('image/png');
+            const optimizedPng = canvas.toDataURL("image/png");
             setCustomLaptopLogo(optimizedPng);
           } else {
             setCustomLaptopLogo(result);
@@ -156,11 +160,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
   const filterServices = () => {
     switch (activeCategory) {
-      case 'admissions':
+      case "admissions":
         return SERVICES_DATA.filter((_, idx) => idx < 4);
-      case 'visa':
+      case "visa":
         return SERVICES_DATA.filter((_, idx) => idx >= 4 && idx < 8);
-      case 'departure':
+      case "departure":
         return SERVICES_DATA.filter((_, idx) => idx >= 8);
       default:
         return SERVICES_DATA;
@@ -168,10 +172,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   };
 
   const filtered = filterServices();
-  const displayedServices = isExpanded || activeCategory !== 'all' ? filtered : filtered.slice(0, 6);
+  const displayedServices =
+    isExpanded || activeCategory !== "all" ? filtered : filtered.slice(0, 6);
 
   return (
-    <section id="services-section" className="py-10 sm:py-14 bg-white relative overflow-hidden">
+    <section
+      id="services-section"
+      className="py-10 sm:py-14 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8 border-b border-slate-100 pb-5">
@@ -184,17 +191,18 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               12 Comprehensive Study Abroad Steps & Services
             </h2>
             <p className="text-slate-600 text-xs sm:text-sm">
-              From profile evaluation in Peshawar to university admission and visa grant across 16 global destinations.
+              From profile evaluation in Peshawar to university admission and
+              visa grant across 16 global destinations.
             </p>
           </div>
 
           {/* Space-Efficient Category Filter Chips */}
           <div className="flex flex-wrap items-center gap-1.5 shrink-0">
             {[
-              { id: 'all', label: 'All Services (12)' },
-              { id: 'admissions', label: 'Admissions' },
-              { id: 'visa', label: 'Visa & Finance' },
-              { id: 'departure', label: 'Departure' },
+              { id: "all", label: "All Services (12)" },
+              { id: "admissions", label: "Admissions" },
+              { id: "visa", label: "Visa & Finance" },
+              { id: "departure", label: "Departure" },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -204,10 +212,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 }}
                 className={`px-3 py-1 rounded-xl text-xs font-bold font-heading transition-all cursor-pointer ${
                   activeCategory === cat.id
-                    ? 'bg-[#DB0303] text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
-                }`}
-              >
+                    ? "bg-[#DB0303] text-white shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"
+                }`}>
                 {cat.label}
               </button>
             ))}
@@ -218,8 +225,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         {showBanner && (
           <div
             id="services-students-horizontal-banner-card"
-            className="relative mb-10 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 group transition-all duration-300 bg-slate-900"
-          >
+            className="relative mb-10 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 group transition-all duration-300 bg-slate-900">
             {/* Horizontal Student Image */}
             <div className="relative w-full aspect-[16/9] max-h-[500px] min-h-[300px] sm:min-h-[380px] overflow-hidden bg-slate-950 flex items-center justify-center">
               <img
@@ -243,7 +249,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                         className="w-4 h-4 rounded-full object-contain bg-white/20"
                       />
                     ) : (
-                      <RSOfficialEmblem size="xs" className="w-4 h-4 shrink-0 shadow-xs" />
+                      <RSOfficialEmblem
+                        size="xs"
+                        className="w-4 h-4 shrink-0 shadow-xs"
+                      />
                     )}
                     <span>RS Higher Education Consultants Portal</span>
                   </span>
@@ -262,7 +271,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                     Personalized Guidance from Application to Campus Arrival
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-200/90 hidden sm:block font-medium drop-shadow-xs">
-                    We prepare complete visa files, interview simulations, SOP reviews, and offer-letter follow-ups with university registrars.
+                    We prepare complete visa files, interview simulations, SOP
+                    reviews, and offer-letter follow-ups with university
+                    registrars.
                   </p>
                 </div>
               </div>
@@ -279,8 +290,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 key={srv.id}
                 id={`service-card-${srv.id}`}
                 onClick={() => setSelectedService(srv)}
-                className="group p-4 rounded-2xl bg-white border border-slate-200/90 hover:border-red-400 hover:shadow-lg hover:shadow-red-950/5 transition-all duration-200 flex flex-col justify-between cursor-pointer hover:-translate-y-0.5"
-              >
+                className="group p-4 rounded-2xl bg-white border border-slate-200/90 hover:border-red-400 hover:shadow-lg hover:shadow-red-950/5 transition-all duration-200 flex flex-col justify-between cursor-pointer hover:-translate-y-0.5">
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between gap-1">
                     <div className="w-8 h-8 rounded-xl bg-red-50 text-[#DB0303] group-hover:bg-[#DB0303] group-hover:text-white transition-all flex items-center justify-center shrink-0">
@@ -313,14 +323,19 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         </div>
 
         {/* Expand / Show More Toggle when in 'all' view */}
-        {activeCategory === 'all' && (
+        {activeCategory === "all" && (
           <div className="mt-4 text-center">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-[#DB0303] text-slate-700 text-xs font-bold font-heading transition-all cursor-pointer border border-slate-200/80 hover:border-red-200"
-            >
-              <span>{isExpanded ? 'Show Less (Compact View)' : 'View All 12 Core Services'}</span>
-              <ArrowRight className={`w-3.5 h-3.5 transition-transform ${isExpanded ? '-rotate-90' : 'rotate-90'}`} />
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-[#DB0303] text-slate-700 text-xs font-bold font-heading transition-all cursor-pointer border border-slate-200/80 hover:border-red-200">
+              <span>
+                {isExpanded
+                  ? "Show Less (Compact View)"
+                  : "View All 12 Core Services"}
+              </span>
+              <ArrowRight
+                className={`w-3.5 h-3.5 transition-transform ${isExpanded ? "-rotate-90" : "rotate-90"}`}
+              />
             </button>
           </div>
         )}
@@ -332,13 +347,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               Ready to begin your application with certified counselors?
             </h4>
             <p className="text-red-100 text-xs font-medium">
-              Visit Deans Trade Centre Peshawar or book an online video counseling session.
+              Visit Deans Trade Centre Peshawar or book an online video
+              counseling session.
             </p>
           </div>
           <button
             onClick={onOpenConsultation}
-            className="px-5 py-2.5 bg-white hover:bg-slate-50 text-[#DB0303] text-xs font-bold rounded-xl font-heading shadow-xs transition-all shrink-0 hover:scale-105 cursor-pointer"
-          >
+            className="px-5 py-2.5 bg-white hover:bg-slate-50 text-[#DB0303] text-xs font-bold rounded-xl font-heading shadow-xs transition-all shrink-0 hover:scale-105 cursor-pointer">
             Book Free Appointment
           </button>
         </div>
@@ -348,25 +363,26 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       {selectedService && (
         <div
           id="service-detail-modal"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-        >
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-red-100 relative space-y-6 animate-in zoom-in-95 duration-200">
             <button
               onClick={() => setSelectedService(null)}
-              className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-red-50 transition-colors"
-            >
+              className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-red-50 transition-colors">
               <X className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-3.5">
               <div className="p-3.5 rounded-2xl bg-red-50 text-[#DB0303]">
-                {React.createElement(iconMap[selectedService.iconName] || Compass, {
-                  className: 'w-6 h-6',
-                })}
+                {React.createElement(
+                  iconMap[selectedService.iconName] || Compass,
+                  {
+                    className: "w-6 h-6",
+                  },
+                )}
               </div>
               <div>
                 <span className="text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
-                  {selectedService.badge || 'RS Service'}
+                  {selectedService.badge || "RS Service"}
                 </span>
                 <h3 className="text-xl font-extrabold text-slate-900 font-heading">
                   {selectedService.title}
@@ -384,7 +400,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               </p>
               <div className="space-y-2">
                 {selectedService.keyBenefits.map((benefit, bIdx) => (
-                  <div key={bIdx} className="flex items-start gap-2 text-xs text-slate-700">
+                  <div
+                    key={bIdx}
+                    className="flex items-start gap-2 text-xs text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-[#DB0303] shrink-0 mt-0.5" />
                     <span>{benefit}</span>
                   </div>
@@ -395,8 +413,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
               <button
                 onClick={() => setSelectedService(null)}
-                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl font-heading"
-              >
+                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl font-heading">
                 Close
               </button>
               <button
@@ -404,8 +421,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   setSelectedService(null);
                   onOpenConsultation();
                 }}
-                className="px-5 py-2.5 bg-[#DB0303] hover:bg-[#B30000] text-white text-xs font-bold rounded-xl shadow-md font-heading"
-              >
+                className="px-5 py-2.5 bg-[#DB0303] hover:bg-[#B30000] text-white text-xs font-bold rounded-xl shadow-md font-heading">
                 Book Consultation
               </button>
             </div>

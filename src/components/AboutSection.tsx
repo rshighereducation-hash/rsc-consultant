@@ -1,6 +1,6 @@
-import React from 'react';
-import { RSLogo } from './RSLogo';
-import { BUSINESS_INFO } from '../data/businessInfo';
+import React from "react";
+import { RSLogo } from "./RSLogo";
+import { BUSINESS_INFO } from "../data/businessInfo";
 import {
   ShieldCheck,
   Award,
@@ -12,16 +12,20 @@ import {
   MapPin,
   Building,
   Sparkles,
-  ArrowRight
-} from 'lucide-react';
+  ArrowRight,
+} from "lucide-react";
 
 interface AboutSectionProps {
   onOpenConsultation: () => void;
 }
 
-export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }) => {
+export const AboutSection: React.FC<AboutSectionProps> = ({
+  onOpenConsultation,
+}) => {
   return (
-    <section id="about-us-section" className="py-20 bg-white relative overflow-hidden">
+    <section
+      id="about-us-section"
+      className="py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Top Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -33,7 +37,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
             About RS Higher Education Consultants
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Empowering Pakistani students with ethical, transparent, and world-class educational pathways from our Peshawar headquarters.
+            Empowering Pakistani students with ethical, transparent, and
+            world-class educational pathways from our Peshawar headquarters.
           </p>
         </div>
 
@@ -44,13 +49,25 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
               A Trusted Bridge Between Pakistan and Global Academia
             </h3>
             <p>
-              Headquartered at <strong>Office No. UG-389, Deans Trade Centre, Peshawar</strong>, RS Higher Education Consultants was established with a singular mission: to eliminate the ambiguity, exaggerated promises, and hidden fees that often plague the study abroad landscape in Pakistan.
+              Headquartered at{" "}
+              <strong>Office No. UG-389, Deans Trade Centre, Peshawar</strong>,
+              RS Higher Education Consultants was established with a singular
+              mission: to eliminate the ambiguity, exaggerated promises, and
+              hidden fees that often plague the study abroad landscape in
+              Pakistan.
             </p>
             <p>
-              We believe that international education is one of the most transformative investments a student and their family can make. Our experienced advisors evaluate every applicant’s unique academic history, financial profile, and long-term career aspirations with clinical honesty.
+              We believe that international education is one of the most
+              transformative investments a student and their family can make.
+              Our experienced advisors evaluate every applicant’s unique
+              academic history, financial profile, and long-term career
+              aspirations with clinical honesty.
             </p>
             <p>
-              Over the years, RS has expanded its portfolio to cover <strong>16 leading study destinations</strong> across the United Kingdom, Europe, North America, Australia, and Asia, representing more than <strong>160 accredited universities</strong> worldwide.
+              Over the years, RS has expanded its portfolio to cover{" "}
+              <strong>16 leading study destinations</strong> across the United
+              Kingdom, Europe, North America, Australia, and Asia, representing
+              more than <strong>160 accredited universities</strong> worldwide.
             </p>
 
             {/* Core Values Checklist */}
@@ -79,14 +96,19 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
               <div className="space-y-2">
                 <RSLogo theme="light" size="lg" variant="horizontal" />
                 <p className="text-xs text-slate-600 pt-2 leading-relaxed font-medium">
-                  "Your Gateway to Global Education" — guiding ambitious minds from Peshawar, Khyber Pakhtunkhwa, and across Pakistan toward global excellence.
+                  "Your Gateway to Global Education" — guiding ambitious minds
+                  from Peshawar, Khyber Pakhtunkhwa, and across Pakistan toward
+                  global excellence.
                 </p>
               </div>
 
               <div className="pt-4 border-t border-red-100 space-y-3 text-xs text-slate-700">
                 <div className="flex items-start gap-2.5 font-medium">
                   <MapPin className="w-4 h-4 text-[#DB0303] shrink-0 mt-0.5" />
-                  <span>{BUSINESS_INFO.address.office}, {BUSINESS_INFO.address.building}, Peshawar, KPK</span>
+                  <span>
+                    {BUSINESS_INFO.address.office},{" "}
+                    {BUSINESS_INFO.address.building}, Peshawar, KPK
+                  </span>
                 </div>
                 <div className="flex items-center gap-2.5 font-semibold text-slate-900">
                   <ShieldCheck className="w-4 h-4 text-[#DB0303] shrink-0" />
@@ -100,8 +122,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
 
               <button
                 onClick={onOpenConsultation}
-                className="w-full py-4 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white text-xs sm:text-sm font-bold rounded-2xl font-heading shadow-md shadow-red-600/25 transition-all flex items-center justify-center gap-2"
-              >
+                className="w-full py-4 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white text-xs sm:text-sm font-bold rounded-2xl font-heading shadow-md shadow-red-600/25 transition-all flex items-center justify-center gap-2">
                 <span>Book In-Person Meeting at Deans Trade Centre</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -119,7 +140,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
               Our Mission
             </h4>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              To provide personalized, rigorous, and completely ethical counseling that equips students with the exact skills, documentation, and institutional options needed to secure life-changing academic admissions and visas across top global destinations.
+              To provide personalized, rigorous, and completely ethical
+              counseling that equips students with the exact skills,
+              documentation, and institutional options needed to secure
+              life-changing academic admissions and visas across top global
+              destinations.
             </p>
           </div>
 
@@ -131,7 +156,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
               Our Vision
             </h4>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              To be recognized as Pakistan’s most reliable, transparent, and student-focused international education consultancy, fostering a new generation of globally trained Pakistani professionals who excel internationally and give back to their homeland.
+              To be recognized as Pakistan’s most reliable, transparent, and
+              student-focused international education consultancy, fostering a
+              new generation of globally trained Pakistani professionals who
+              excel internationally and give back to their homeland.
             </p>
           </div>
         </div>

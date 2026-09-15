@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useRef, ChangeEvent } from 'react';
-import { TESTIMONIALS_DATA } from '../data/testimonialsData';
-import { CountryFlag } from './CountryFlag';
-import { useBrand } from '../context/BrandContext';
-import defaultSuccessImg from '../assets/images/succes.png';
-import { RSOfficialEmblem } from './RSLogo';
+import React, { useState, useMemo, useRef, ChangeEvent } from "react";
+import { TESTIMONIALS_DATA } from "../data/testimonialsData";
+import { CountryFlag } from "./CountryFlag";
+import { useBrand } from "../context/BrandContext";
+import defaultSuccessImg from "../assets/images/succes.png";
+import { RSOfficialEmblem } from "./RSLogo";
 import {
   Quote,
   Star,
@@ -17,8 +17,8 @@ import {
   Upload,
   RefreshCw,
   Trophy,
-  Users
-} from 'lucide-react';
+  Users,
+} from "lucide-react";
 
 interface SuccessStoriesProps {
   onOpenConsultation: () => void;
@@ -29,22 +29,26 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
   onOpenConsultation,
   showBanner = true,
 }) => {
-  const { customSuccessBanner, setCustomSuccessBanner, openSuccessBannerModal } = useBrand();
+  const {
+    customSuccessBanner,
+    setCustomSuccessBanner,
+    openSuccessBannerModal,
+  } = useBrand();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<string>('all');
+  const [selectedCountry, setSelectedCountry] = useState<string>("all");
 
   // Direct quick file upload handler
   const handleQuickUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (!file.type.startsWith('image/')) return;
+      if (!file.type.startsWith("image/")) return;
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result as string;
         const img = new Image();
         img.onload = () => {
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           const maxDimension = 1600;
           let width = img.width;
           let height = img.height;
@@ -59,10 +63,10 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
           }
           canvas.width = width;
           canvas.height = height;
-          const ctx = canvas.getContext('2d');
+          const ctx = canvas.getContext("2d");
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            const optimizedJpg = canvas.toDataURL('image/jpeg', 0.9);
+            const optimizedJpg = canvas.toDataURL("image/jpeg", 0.9);
             setCustomSuccessBanner(optimizedJpg);
           } else {
             setCustomSuccessBanner(result);
@@ -76,17 +80,21 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
 
   // Extract unique countries from testimonials
   const countryFilters = useMemo(() => {
-    const unique = Array.from(new Set(TESTIMONIALS_DATA.map((t) => t.destination)));
-    return ['all', ...unique];
+    const unique = Array.from(
+      new Set(TESTIMONIALS_DATA.map((t) => t.destination)),
+    );
+    return ["all", ...unique];
   }, []);
 
   const filteredTestimonials = useMemo(() => {
-    if (selectedCountry === 'all') return TESTIMONIALS_DATA;
+    if (selectedCountry === "all") return TESTIMONIALS_DATA;
     return TESTIMONIALS_DATA.filter((t) => t.destination === selectedCountry);
   }, [selectedCountry]);
 
   return (
-    <section id="success-stories-section" className="py-20 bg-slate-50/70 relative overflow-hidden">
+    <section
+      id="success-stories-section"
+      className="py-20 bg-slate-50/70 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
@@ -98,13 +106,16 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
             Hear From Our Global Scholars
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
-            Read verified success reviews from Pakistani students placed in leading universities worldwide by RS Higher Education Consultants.
+            Read verified success reviews from Pakistani students placed in
+            leading universities worldwide by RS Higher Education Consultants.
           </p>
 
           {/* Country Filter Tabs */}
           <div className="pt-4 flex flex-wrap items-center justify-center gap-2">
             {countryFilters.map((country) => {
-              const sampleItem = TESTIMONIALS_DATA.find((t) => t.destination === country);
+              const sampleItem = TESTIMONIALS_DATA.find(
+                (t) => t.destination === country,
+              );
               const isSelected = selectedCountry === country;
               return (
                 <button
@@ -112,11 +123,10 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
                   onClick={() => setSelectedCountry(country)}
                   className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold font-heading transition-all shadow-2xs cursor-pointer ${
                     isSelected
-                      ? 'bg-[#DB0303] text-white shadow-md scale-105'
-                      : 'bg-white text-slate-700 hover:text-[#DB0303] border border-slate-200 hover:border-red-200'
-                  }`}
-                >
-                  {country !== 'all' && sampleItem && (
+                      ? "bg-[#DB0303] text-white shadow-md scale-105"
+                      : "bg-white text-slate-700 hover:text-[#DB0303] border border-slate-200 hover:border-red-200"
+                  }`}>
+                  {country !== "all" && sampleItem && (
                     <CountryFlag
                       countryCode={country}
                       countryName={country}
@@ -124,7 +134,7 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
                       size="xs"
                     />
                   )}
-                  <span>{country === 'all' ? 'All Reviews' : country}</span>
+                  <span>{country === "all" ? "All Reviews" : country}</span>
                 </button>
               );
             })}
@@ -135,8 +145,7 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
         {showBanner && (
           <div
             id="success-students-horizontal-banner-card"
-            className="relative mb-12 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 group transition-all duration-300 bg-slate-900"
-          >
+            className="relative mb-12 rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 group transition-all duration-300 bg-slate-900">
             {/* Horizontal Student Image */}
             <div className="relative w-full aspect-[16/9] sm:aspect-[16/8] max-h-[520px] min-h-[300px] sm:min-h-[400px] overflow-hidden bg-slate-950 flex items-center justify-center">
               <img
@@ -153,8 +162,7 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
               <div
                 id="banner-official-rs-logo-badge"
                 className="absolute top-3.5 left-3.5 sm:top-5 sm:left-5 z-20 flex items-center gap-2.5 sm:gap-3 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-slate-950/90 backdrop-blur-md border border-white/25 shadow-2xl pointer-events-auto"
-                title="RS Higher Education Consultants - Official Verified Placement Network"
-              >
+                title="RS Higher Education Consultants - Official Verified Placement Network">
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white flex items-center justify-center p-0.5 border border-red-500 shadow-md shrink-0">
                   <RSOfficialEmblem size="xs" variant="circle" />
                 </div>
@@ -184,10 +192,13 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
 
                 <div className="max-w-2xl">
                   <h3 className="text-lg sm:text-2xl font-black text-white font-heading tracking-tight drop-shadow-md">
-                    Celebrating Our Students' Global Academic Milestones & Visa Victories
+                    Celebrating Our Students' Global Academic Milestones & Visa
+                    Victories
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-200/90 hidden sm:block font-medium drop-shadow-xs">
-                    From university offer letters to airport departure and on-campus graduation, RS Consultants stands by every student.
+                    From university offer letters to airport departure and
+                    on-campus graduation, RS Consultants stands by every
+                    student.
                   </p>
                 </div>
               </div>
@@ -201,8 +212,7 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
             <div
               key={item.id}
               id={`testimonial-${item.id}`}
-              className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 hover:border-red-300 hover:shadow-xl hover:shadow-red-950/5 transition-all duration-300 flex flex-col justify-between space-y-5 relative group hover:-translate-y-1"
-            >
+              className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 hover:border-red-300 hover:shadow-xl hover:shadow-red-950/5 transition-all duration-300 flex flex-col justify-between space-y-5 relative group hover:-translate-y-1">
               <div className="space-y-4">
                 {/* Header with stars & official Country Logo / Badge */}
                 <div className="flex items-center justify-between gap-2">
@@ -278,13 +288,13 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
               Ready to write your own international success story?
             </h3>
             <p className="text-red-100 text-xs sm:text-sm font-medium">
-              Schedule a personalized profile evaluation with our expert counselors in Peshawar today.
+              Schedule a personalized profile evaluation with our expert
+              counselors in Peshawar today.
             </p>
           </div>
           <button
             onClick={onOpenConsultation}
-            className="px-7 py-4 bg-white hover:bg-slate-50 text-[#DB0303] text-xs sm:text-sm font-bold rounded-2xl font-heading shadow-lg hover:scale-105 shrink-0 transition-all cursor-pointer"
-          >
+            className="px-7 py-4 bg-white hover:bg-slate-50 text-[#DB0303] text-xs sm:text-sm font-bold rounded-2xl font-heading shadow-lg hover:scale-105 shrink-0 transition-all cursor-pointer">
             Start Your Journey Today
           </button>
         </div>

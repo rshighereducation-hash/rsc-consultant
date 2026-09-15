@@ -183,9 +183,13 @@ export const Footer: React.FC<FooterProps> = ({
             </h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-slate-600">
               {ALL_DESTINATIONS.map((d) => (
-                <button
+                <a
                   key={d.id}
-                  onClick={() => onNavigate("destination-detail", d.slug)}
+                  href={`/destinations/${d.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("destination-detail", d.slug);
+                  }}
                   className="text-left hover:text-[#DB0303] hover:underline flex items-center gap-2 transition-colors truncate font-medium cursor-pointer group">
                   <CountryFlag
                     countryCode={d.flagCode || d.slug}
@@ -195,7 +199,7 @@ export const Footer: React.FC<FooterProps> = ({
                     className="shrink-0 group-hover:scale-105 transition-transform"
                   />
                   <span className="truncate">{d.countryName}</span>
-                </button>
+                </a>
               ))}
             </div>
           </div>
@@ -206,18 +210,28 @@ export const Footer: React.FC<FooterProps> = ({
               Quick Navigation
             </h4>
             <div className="space-y-2 text-xs text-slate-600 flex flex-col font-medium">
-              <button
-                onClick={() => onNavigate("home")}
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("home");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 Home
-              </button>
-              <button
-                onClick={() => onNavigate("about")}
+              </a>
+              <a
+                href="/about"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("about");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 About RS Consultants
-              </button>
-              <button
-                onClick={() => {
+              </a>
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
                   onNavigate("home");
                   setTimeout(() => {
                     const el = document.getElementById("founder-ceo-section");
@@ -226,42 +240,70 @@ export const Footer: React.FC<FooterProps> = ({
                 }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer flex items-center gap-1 text-[#DB0303] font-semibold">
                 <span>Founder & CEO Message</span>
-              </button>
-              <button
-                onClick={() => onNavigate("services")}
+              </a>
+              <a
+                href="/services"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("services");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 12 Core Services
-              </button>
-              <button
-                onClick={() => onNavigate("universities")}
+              </a>
+              <a
+                href="/universities"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("universities");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 160+ University Portfolios
-              </button>
-              <button
-                onClick={() => onNavigate("finder")}
+              </a>
+              <a
+                href="/course-finder"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("finder");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 Smart Course Finder
-              </button>
-              <button
-                onClick={() => onNavigate("success")}
+              </a>
+              <a
+                href="/student-success"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("success");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 Student Success Stories
-              </button>
-              <button
-                onClick={() => onNavigate("resources")}
+              </a>
+              <a
+                href="/resources"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("resources");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 Visa & Scholarship Guides
-              </button>
-              <button
-                onClick={() => onNavigate("faq")}
+              </a>
+              <a
+                href="/faq"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("faq");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 Frequently Asked Questions
-              </button>
-              <button
-                onClick={() => onNavigate("contact")}
+              </a>
+              <a
+                href="/contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate("contact");
+                }}
                 className="text-left hover:text-[#DB0303] hover:underline cursor-pointer">
                 Contact Peshawar Office
-              </button>
+              </a>
             </div>
 
             <div className="pt-2">
@@ -319,13 +361,13 @@ export const Footer: React.FC<FooterProps> = ({
             {onOpenGoogleSync && (
               <>
                 <span>•</span>
-                <button
+                {/* <button
                   onClick={onOpenGoogleSync}
                   className="hover:text-[#DB0303] text-slate-400 hover:underline transition-colors cursor-pointer inline-flex items-center gap-1"
                   title="Consultant Private Portal (Google Sheets & Inquiries Database)">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Admin Leads Hub</span>
-                </button>
+                </button> */}
               </>
             )}
           </div>

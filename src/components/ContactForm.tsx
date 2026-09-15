@@ -497,35 +497,55 @@ export const ContactForm: React.FC<ContactFormProps> = ({
         const pdfDoc = PdfGenerationService.generateApplicationPdf(leadPayload);
         const pdfBlob = pdfDoc.output("blob");
 
-        await Promise.allSettled([
-          GoogleIntegrationService.appendToGoogleSheet(
-            token,
-            leadPayload as any,
-          ),
-          GoogleIntegrationService.sendNotificationEmail(
-            token,
-            leadPayload as any,
-            "rshighereducation@gmail.com",
-          ),
-          GoogleIntegrationService.uploadPdfToDrive(
-            token,
-            pdfBlob,
-            leadPayload.fullName,
-          ),
-        ]);
-        setSyncStatus(
-          "Synchronized with Google Drive, Sheets & rshighereducation@gmail.com",
-        );
+        const [sheetResult, emailResult, driveResult] =
+          await Promise.allSettled([
+            GoogleIntegrationService.appendToGoogleSheet(
+              token,
+              leadPayload as any,
+            ),
+            GoogleIntegrationService.sendNotificationEmail(
+              token,
+              leadPayload as any,
+              "rshighereducation@gmail.com", //my email
+            ),
+            GoogleIntegrationService.uploadPdfToDrive(
+              token,
+              pdfBlob,
+              leadPayload.fullName,
+            ),
+          ]);
+
+        if (sheetResult.status === "fulfilled") {
+          const failedServices = [emailResult, driveResult].filter(
+            (result) => result.status === "rejected",
+          ).length;
+          setSyncStatus(
+            failedServices > 0
+              ? `Google Sheet updated. ${failedServices} additional Google service(s) failed.`
+              : "Synchronized with Google Drive, Sheets & rshighereducation@gmail.com",
+          );
+        } else {
+          setSyncStatus(
+            `Google Sheet sync failed: ${sheetResult.reason?.message || "Please reconnect Google Workspace."}`,
+          );
+        }
       } catch (syncErr) {
         console.warn("Google Workspace background sync error:", syncErr);
+        setSyncStatus(
+          `Google Sheet sync failed: ${syncErr instanceof Error ? syncErr.message : "Please reconnect Google Workspace."}`,
+        );
       }
+    } else {
+      setSyncStatus(
+        "Google Sheet not updated: connect Google Workspace from the site menu first.",
+      );
     }
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(leadPayload),
+        body: JSON.stringify(fullLeadPayload),
       });
 
       await res.json().catch(() => ({ success: true }));

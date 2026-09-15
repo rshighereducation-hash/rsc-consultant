@@ -48,8 +48,6 @@ export const TurkeyChecklistSection: React.FC = () => {
     customTurkeyChecklistName,
     customTurkeyInterviewPdf,
     customTurkeyInterviewName,
-    openTurkeyChecklistModal,
-    openTurkeyInterviewModal
   } = useBrand();
 
   const toggleAdmission = (id: string) => {
@@ -390,63 +388,39 @@ export const TurkeyChecklistSection: React.FC = () => {
 
           {/* Prominent Highlighting Action Buttons */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
-            {/* Turkey Checklist Button + Upload Trigger */}
-            <div className="flex items-center rounded-2xl bg-red-950/40 p-1 border border-red-500/30">
-              <button
-                onClick={handleDownloadChecklist}
-                disabled={downloadingType === 'checklist'}
-                id="turkey-download-checklist-btn"
-                className="px-5 py-3.5 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white font-black text-xs sm:text-sm rounded-xl font-heading shadow-xl shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-red-400/30"
-                title={customTurkeyChecklistPdf ? `Download custom: ${customTurkeyChecklistName}` : "Download Turkey checklist PDF"}
-              >
-                <Download className={`w-4 h-4 ${downloadingType === 'checklist' ? 'animate-bounce' : ''}`} />
-                <span>{downloadingType === 'checklist' ? 'Generating...' : 'Turkey checklist (PDF)'}</span>
-                {customTurkeyChecklistPdf && (
-                  <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase">
-                    Custom
-                  </span>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={openTurkeyChecklistModal}
-                id="turkey-upload-checklist-btn"
-                className="px-3 py-3.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ml-1"
-                title="Browse & Upload your own Turkey Checklist PDF from your PC"
-              >
-                <Upload className="w-3.5 h-3.5 text-amber-300" />
-                <span className="hidden xl:inline">Upload</span>
-              </button>
-            </div>
+            {/* Turkey Checklist Button */}
+            <button
+              onClick={handleDownloadChecklist}
+              disabled={downloadingType === 'checklist'}
+              id="turkey-download-checklist-btn"
+              className="px-5 py-3.5 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white font-black text-xs sm:text-sm rounded-2xl font-heading shadow-xl shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-red-400/30"
+              title={customTurkeyChecklistPdf ? `Download custom: ${customTurkeyChecklistName}` : "Download Turkey checklist PDF"}
+            >
+              <Download className={`w-4 h-4 ${downloadingType === 'checklist' ? 'animate-bounce' : ''}`} />
+              <span>{downloadingType === 'checklist' ? 'Generating...' : 'Turkey checklist (PDF)'}</span>
+              {customTurkeyChecklistPdf && (
+                <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase">
+                  Custom
+                </span>
+              )}
+            </button>
 
-            {/* Turkey Questioner Button + Upload Trigger */}
-            <div className="flex items-center rounded-2xl bg-amber-950/40 p-1 border border-amber-400/30">
-              <button
-                onClick={handleDownloadInterview}
-                disabled={downloadingType === 'interview'}
-                id="turkey-download-interview-btn"
-                className="px-5 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-xl font-heading shadow-xl shadow-amber-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-300"
-                title={customTurkeyInterviewPdf ? `Download custom: ${customTurkeyInterviewName}` : "Download Turkey Questioner PDF"}
-              >
-                <Download className={`w-4 h-4 text-slate-950 ${downloadingType === 'interview' ? 'animate-bounce' : ''}`} />
-                <span>{downloadingType === 'interview' ? 'Generating...' : 'Turkey Questioner (PDF)'}</span>
-                {customTurkeyInterviewPdf && (
-                  <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase">
-                    Custom
-                  </span>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={openTurkeyInterviewModal}
-                id="turkey-upload-interview-btn"
-                className="px-3 py-3.5 bg-slate-900/30 hover:bg-slate-900/50 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ml-1"
-                title="Browse & Upload your own Turkey Questioner PDF from your PC"
-              >
-                <Upload className="w-3.5 h-3.5 text-slate-950" />
-                <span className="hidden xl:inline">Upload</span>
-              </button>
-            </div>
+            {/* Turkey Questioner Button */}
+            <button
+              onClick={handleDownloadInterview}
+              disabled={downloadingType === 'interview'}
+              id="turkey-download-interview-btn"
+              className="px-5 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-2xl font-heading shadow-xl shadow-amber-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-300"
+              title={customTurkeyInterviewPdf ? `Download custom: ${customTurkeyInterviewName}` : "Download Turkey Questioner PDF"}
+            >
+              <Download className={`w-4 h-4 text-slate-950 ${downloadingType === 'interview' ? 'animate-bounce' : ''}`} />
+              <span>{downloadingType === 'interview' ? 'Generating...' : 'Turkey Questioner (PDF)'}</span>
+              {customTurkeyInterviewPdf && (
+                <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase">
+                  Custom
+                </span>
+              )}
+            </button>
 
             <button
               onClick={handlePrint}

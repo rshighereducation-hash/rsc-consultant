@@ -42,15 +42,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, []);
 
   const navLinks = [
-    { label: "Home", view: "home" },
-    { label: "About Us", view: "about" },
-    { label: "Study Destinations", view: "destinations", isMega: true },
-    { label: "Universities", view: "universities" },
-    { label: "Services", view: "services" },
-    { label: "Student Success", view: "success" },
-    { label: "Course Finder", view: "finder" },
-    { label: "FAQ", view: "faq" },
-    { label: "Contact", view: "contact" },
+    { label: "Home", view: "home", path: "/" },
+    { label: "About Us", view: "about", path: "/about" },
+    { label: "Study Destinations", view: "destinations", path: "/destinations", isMega: true },
+    { label: "Universities", view: "universities", path: "/universities" },
+    { label: "Services", view: "services", path: "/services" },
+    { label: "Student Success", view: "success", path: "/student-success" },
+    { label: "Course Finder", view: "finder", path: "/course-finder" },
+    { label: "FAQ", view: "faq", path: "/faq" },
+    { label: "Contact", view: "contact", path: "/contact" },
   ];
 
   const handleNavClick = (view: string, destinationSlug?: string) => {
@@ -72,9 +72,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between  sm:gap-4">
           {/* Brand Logo */}
           <div className="flex items-center gap-2 shrink-0">
-            <button
+            <a
               id="nav-logo-btn"
-              onClick={() => handleNavClick("home")}
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick("home");
+              }}
               className="text-left focus:outline-none rounded-lg py-0.5 transition-transform hover:scale-[1.01] cursor-pointer"
               title="RS Higher Education Consultants (Click to go Home)">
               <img
@@ -82,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 alt="RS Higher Education Consultants"
                 className="h-8 xs:h-9 sm:h-11 md:h-12 lg:h-14 xl:h-16 w-auto max-w-[130px] sm:max-w-[180px] md:max-w-[220px] lg:max-w-none object-contain transition-all duration-300"
               />
-            </button>
+            </a>
           </div>
 
           {/* Desktop & Laptop Navigation Bar (1024px+) */}
@@ -135,22 +139,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                               </p>
                             </div>
                           </div>
-                          <button
-                            onClick={() => handleNavClick("destinations")}
+                          <a
+                            href="/destinations"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleNavClick("destinations");
+                            }}
                             className="text-xs text-[#DB0303] hover:text-[#B30000] flex items-center gap-1 font-bold transition-colors font-heading cursor-pointer">
                             <span>Explore All Countries</span>
                             <ArrowRight className="w-3.5 h-3.5" />
-                          </button>
+                          </a>
                         </div>
 
                         <div className="grid grid-cols-4 gap-2.5">
                           {ALL_DESTINATIONS.map((dest) => (
-                            <button
+                            <a
                               key={dest.id}
                               id={`mega-dest-${dest.slug}`}
-                              onClick={() =>
-                                handleNavClick("destination-detail", dest.slug)
-                              }
+                              href={`/destinations/${dest.slug}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleNavClick("destination-detail", dest.slug);
+                              }}
                               className="group text-left p-2.5 rounded-2xl hover:bg-red-50/70 border border-transparent hover:border-red-100 transition-all flex items-start gap-2.5 cursor-pointer">
                               <div className="shrink-0 p-1 bg-slate-50 group-hover:bg-white rounded-xl shadow-xs group-hover:scale-110 transition-transform">
                                 <CountryFlag
@@ -168,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                   {dest.universities.length} Institutions
                                 </p>
                               </div>
-                            </button>
+                            </a>
                           ))}
                         </div>
 
@@ -193,17 +203,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               }
 
               return (
-                <button
+                <a
                   key={link.label}
                   id={`nav-link-${link.view}`}
-                  onClick={() => handleNavClick(link.view)}
+                  href={link.path}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(link.view);
+                  }}
                   className={`px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-bold rounded-xl transition-all font-heading cursor-pointer whitespace-nowrap ${
                     isActive
                       ? "text-white bg-[#DB0303] shadow-md shadow-red-500/20"
                       : "text-slate-700 hover:text-[#DB0303] hover:bg-red-50/70"
                   }`}>
                   {link.label}
-                </button>
+                </a>
               );
             })}
           </nav>
@@ -248,17 +262,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               {navLinks.map((link) => {
                 const isActive = currentView === link.view;
                 return (
-                  <button
+                  <a
                     key={`mobile-drawer-${link.label}`}
                     id={`mobile-drawer-nav-${link.view}`}
-                    onClick={() => handleNavClick(link.view)}
+                    href={link.path}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(link.view);
+                    }}
                     className={`px-3 py-2 text-xs font-bold rounded-xl transition-all font-heading text-left cursor-pointer ${
                       isActive
                         ? "text-white bg-[#DB0303] shadow-xs"
                         : "text-slate-700 bg-slate-50 hover:bg-red-50 hover:text-[#DB0303]"
                     }`}>
                     {link.label}
-                  </button>
+                  </a>
                 );
               })}
             </div>

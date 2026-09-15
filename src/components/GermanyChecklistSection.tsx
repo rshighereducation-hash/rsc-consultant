@@ -18,8 +18,7 @@ import {
   Building2,
   Calendar,
   CreditCard,
-  FileText,
-  Upload
+  FileText
 } from 'lucide-react';
 
 export const GermanyChecklistSection: React.FC = () => {
@@ -28,8 +27,7 @@ export const GermanyChecklistSection: React.FC = () => {
 
   const {
     customGermanyChecklistPdf,
-    customGermanyChecklistName,
-    openGermanyChecklistModal
+    customGermanyChecklistName
   } = useBrand();
 
   const toggleCheck = (id: string) => {
@@ -101,33 +99,21 @@ export const GermanyChecklistSection: React.FC = () => {
 
           {/* Prominent Highlighting Action Buttons */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
-            <div className="flex items-center rounded-2xl bg-red-950/40 p-1 border border-red-500/30 shadow-lg">
-              <button
-                onClick={handleDownload}
-                disabled={isDownloading}
-                id="germany-download-pdf-btn"
-                className="px-5 py-3.5 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white font-black text-xs sm:text-sm rounded-xl font-heading shadow-xl shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer border border-red-400/30"
-                title={customGermanyChecklistPdf ? `Download custom: ${customGermanyChecklistName}` : "Download Official PDF Checklist"}
-              >
-                <Download className={`w-5 h-5 ${isDownloading ? 'animate-bounce' : ''}`} />
-                <span>{isDownloading ? 'Generating PDF...' : 'Download Official PDF Checklist'}</span>
-                {customGermanyChecklistPdf && (
-                  <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase tracking-wider">
-                    Custom
-                  </span>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={openGermanyChecklistModal}
-                id="germany-upload-checklist-btn"
-                className="px-3.5 py-3.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ml-1"
-                title="Browse & Upload your own Germany Checklist PDF from your PC"
-              >
-                <Upload className="w-4 h-4 text-amber-300" />
-                <span className="hidden xl:inline">Upload</span>
-              </button>
-            </div>
+            <button
+              onClick={handleDownload}
+              disabled={isDownloading}
+              id="germany-download-pdf-btn"
+              className="px-5 py-3.5 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white font-black text-xs sm:text-sm rounded-2xl font-heading shadow-xl shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer border border-red-400/30"
+              title={customGermanyChecklistPdf ? `Download custom: ${customGermanyChecklistName}` : "Download Official PDF Checklist"}
+            >
+              <Download className={`w-5 h-5 ${isDownloading ? 'animate-bounce' : ''}`} />
+              <span>{isDownloading ? 'Generating PDF...' : 'Download Official PDF Checklist'}</span>
+              {customGermanyChecklistPdf && (
+                <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase tracking-wider">
+                  Custom
+                </span>
+              )}
+            </button>
 
             <button
               onClick={handlePrint}

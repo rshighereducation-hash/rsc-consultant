@@ -32,12 +32,98 @@ import {
   ArrowRight
 } from 'lucide-react';
 
+function getRouteFromPath(pathname: string): { view: string; destinationSlug: string | null } {
+  const path = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+
+  if (path === '' || path === '/') {
+    return { view: 'home', destinationSlug: null };
+  }
+  if (path === '/about') {
+    return { view: 'about', destinationSlug: null };
+  }
+  if (path === '/destinations') {
+    return { view: 'destinations', destinationSlug: null };
+  }
+  if (path.startsWith('/destinations/')) {
+    const slug = path.replace('/destinations/', '');
+    if (slug) {
+      return { view: 'destination-detail', destinationSlug: slug };
+    }
+    return { view: 'destinations', destinationSlug: null };
+  }
+  if (path === '/universities') {
+    return { view: 'universities', destinationSlug: null };
+  }
+  if (path === '/services') {
+    return { view: 'services', destinationSlug: null };
+  }
+  if (path === '/student-success' || path === '/success') {
+    return { view: 'success', destinationSlug: null };
+  }
+  if (path === '/course-finder' || path === '/finder') {
+    return { view: 'finder', destinationSlug: null };
+  }
+  if (path === '/resources') {
+    return { view: 'resources', destinationSlug: null };
+  }
+  if (path === '/faq') {
+    return { view: 'faq', destinationSlug: null };
+  }
+  if (path === '/contact') {
+    return { view: 'contact', destinationSlug: null };
+  }
+
+  return { view: 'home', destinationSlug: null };
+}
+
+function getPathFromRoute(view: string, destinationSlug?: string | null): string {
+  if (destinationSlug || view === 'destination-detail') {
+    return `/destinations/${destinationSlug || ''}`;
+  }
+  switch (view) {
+    case 'about':
+      return '/about';
+    case 'destinations':
+      return '/destinations';
+    case 'universities':
+      return '/universities';
+    case 'services':
+      return '/services';
+    case 'success':
+      return '/student-success';
+    case 'finder':
+      return '/course-finder';
+    case 'resources':
+      return '/resources';
+    case 'faq':
+      return '/faq';
+    case 'contact':
+      return '/contact';
+    case 'home':
+    default:
+      return '/';
+  }
+}
+
 export function App() {
-  const [currentView, setCurrentView] = useState<string>('home');
-  const [selectedDestinationSlug, setSelectedDestinationSlug] = useState<string | null>(null);
+  const initialRoute = getRouteFromPath(window.location.pathname);
+  const [currentView, setCurrentView] = useState<string>(initialRoute.view);
+  const [selectedDestinationSlug, setSelectedDestinationSlug] = useState<string | null>(initialRoute.destinationSlug);
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
   const [isGoogleSyncOpen, setIsGoogleSyncOpen] = useState(false);
   const [legalModalType, setLegalModalType] = useState<'privacy' | 'terms' | 'disclaimer' | null>(null);
+
+  // Sync state when browser Back / Forward buttons are pressed
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = getRouteFromPath(window.location.pathname);
+      setCurrentView(route.view);
+      setSelectedDestinationSlug(route.destinationSlug);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Scroll to top whenever view changes
   useEffect(() => {
@@ -45,18 +131,25 @@ export function App() {
   }, [currentView, selectedDestinationSlug]);
 
   const handleNavigate = (view: string, destinationSlug?: string) => {
+    let nextView = view;
+    let nextSlug: string | null = destinationSlug || null;
+
     if (destinationSlug) {
-      setSelectedDestinationSlug(destinationSlug);
-      setCurrentView('destination-detail');
-    } else {
-      setSelectedDestinationSlug(null);
-      setCurrentView(view);
+      nextView = 'destination-detail';
+      nextSlug = destinationSlug;
     }
+
+    const targetPath = getPathFromRoute(nextView, nextSlug);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+
+    setSelectedDestinationSlug(nextSlug);
+    setCurrentView(nextView);
   };
 
   const handleSelectDestination = (slug: string) => {
-    setSelectedDestinationSlug(slug);
-    setCurrentView('destination-detail');
+    handleNavigate('destination-detail', slug);
   };
 
   const activeDestination = selectedDestinationSlug
