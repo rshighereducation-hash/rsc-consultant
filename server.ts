@@ -7,12 +7,9 @@ import "dotenv/config";
 
 async function startServer() {
   const app = express();
-
-  // Hostinger dynamic PORT aur Host connection configuration
+  //add the process.env.port for Hostinger
   const PORT = Number(process.env.PORT) || 3000;
-  const HOST = process.env.HOST || "0.0.0.0";
-
-  // for email SMTP connected with .env variables
+  // for email SMTP
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT || 465),
@@ -176,12 +173,14 @@ Your objective:
       };
 
       storedLeads.unshift(leadData);
+      // for pdf to email
 
       try {
         await transporter.sendMail({
           from: process.env.SMTP_USER,
           to: process.env.BUSINESS_EMAIL,
           subject: `New Student Inquiry - ${fullName}`,
+
           text: `
 New student inquiry received.
 
@@ -199,6 +198,7 @@ Reference: ${applicationId || ""}
 Message:
 ${message || ""}
 `,
+
           attachments: pdfBase64
             ? [
                 {
@@ -215,6 +215,7 @@ ${message || ""}
         console.error("Email sending failed:", emailError);
       }
 
+      // Log lead safely for backend tracking (routed to business email info@rshec.pk)
       console.log(" [RS HEC Lead Received]", JSON.stringify(leadData, null, 2));
 
       return res.status(200).json({
@@ -347,9 +348,9 @@ ${message || ""}
     });
   }
 
-  app.listen(PORT, HOST, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(
-      `RS Higher Education Consultants server running on http://${HOST}:${PORT}`,
+      ` RS Higher Education Consultants server running on http://localhost:${PORT}`,
     );
   });
 }

@@ -506,7 +506,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             GoogleIntegrationService.sendNotificationEmail(
               token,
               leadPayload as any,
-              "rshighereducation@gmail.com", //my email
+              "iqbalmansoor55@gmail.com", //my email
             ),
             GoogleIntegrationService.uploadPdfToDrive(
               token,
