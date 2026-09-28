@@ -20,6 +20,28 @@ async function startServer() {
     },
   });
 
+  // Do not leak backend framework details to the client
+  app.disable("x-powered-by");
+
+  // CORS - only needed when the frontend is hosted on a different domain
+  // than the API (e.g. https://rshec.pk calling https://api.rshec.pk).
+  const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Vary", "Origin");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    }
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
+  });
+
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
@@ -230,6 +252,82 @@ ${message || ""}
         success: false,
         error:
           "An internal error occurred while processing your request. Please contact us via WhatsApp directly.",
+      });
+    }
+  });
+
+  // Email the generated inquiry PDF to the student's own email address
+  app.post("/api/send-email", async (req, res) => {
+    try {
+      const {
+        applicationId,
+        fullName,
+        email,
+        phone,
+        destination,
+        pdfBase64,
+        pdfFileName,
+      } = req.body || {};
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!fullName || !email || !emailPattern.test(String(email).trim())) {
+        return res.status(400).json({
+          success: false,
+          error: "A valid student name and email address are required.",
+        });
+      }
+
+      if (!pdfBase64) {
+        return res.status(400).json({
+          success: false,
+          error: "The inquiry form PDF attachment is missing.",
+        });
+      }
+
+      // Sanitize the filename coming from the client
+      const safeFileName = String(
+        pdfFileName || `RS_Inquiry_Form_${fullName}.pdf`,
+      ).replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM || process.env.SMTP_USER,
+        to: String(email).trim(),
+        subject: "Your Inquiry Form - RS Higher Education Consultants",
+        text: `Dear ${fullName},
+
+Thank you for contacting RS Higher Education Consultants.
+
+A copy of the inquiry form you submitted is attached to this email for your records.
+
+Reference: ${applicationId || "-"}
+Mobile: ${phone || "-"}
+Preferred Destination: ${destination || "-"}
+
+Our senior counselor will contact you within 24 hours.
+
+RS Higher Education Consultants
+Office No. UG-389, Upper Ground Floor, Deans Trade Centre, Peshawar Cantt, KPK
+WhatsApp: +92 334 4626284 | www.rshec.pk`,
+        attachments: [
+          {
+            filename: safeFileName,
+            content: Buffer.from(pdfBase64, "base64"),
+            contentType: "application/pdf",
+          },
+        ],
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "A copy of your inquiry form has been emailed to you.",
+      });
+    } catch (err) {
+      // Log the real reason on the server only - never send it to the client
+      console.error("send-email error:", err);
+      return res.status(502).json({
+        success: false,
+        error: "Unable to send the email at this time. Please try again later.",
       });
     }
   });

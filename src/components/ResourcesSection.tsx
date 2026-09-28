@@ -3,6 +3,7 @@ import { RESOURCES_DATA } from '../data/resourcesData';
 import { ResourceItem } from '../types';
 import { generateGermanyChecklistPDF } from '../utils/germanyPdfGenerator';
 import { generateTurkeyChecklistPDF, generateTurkeyInterviewGuidePDF } from '../utils/turkeyPdfGenerator';
+import { generateUKChecklistPDF } from '../utils/unitedkingdom';
 import {
   BookOpen,
   Calendar,
@@ -23,7 +24,18 @@ interface ResourcesSectionProps {
 
 export const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onOpenConsultation }) => {
   const [selectedArticle, setSelectedArticle] = useState<ResourceItem | null>(null);
-  const [downloadingDoc, setDownloadingDoc] = useState<'germany' | 'turkey' | 'turkey-interview' | null>(null);
+  const [downloadingDoc, setDownloadingDoc] = useState<'germany' | 'turkey' | 'turkey-interview' | 'uk' | null>(null);
+
+  const handleDownloadUk = () => {
+    setDownloadingDoc('uk');
+    try {
+      generateUKChecklistPDF();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setTimeout(() => setDownloadingDoc(null), 800);
+    }
+  };
 
   const handleDownloadTurkey = () => {
     setDownloadingDoc('turkey');
@@ -76,7 +88,36 @@ export const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onOpenConsul
         </div>
 
         {/* Featured Official Document Downloads Grid */}
-        <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+        <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
+          {/* UK Official Checklist Download Card */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-[#990000] text-white flex flex-col justify-between gap-4 shadow-xl border-2 border-red-500/40 relative overflow-hidden">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 bg-[#DB0303] text-white rounded-2xl shrink-0 shadow-lg shadow-red-600/30">
+                <FileCheck2 className="w-5 h-5" />
+              </div>
+              <div className="space-y-1 min-w-0">
+                <div className="inline-flex items-center gap-1 text-[9px] font-bold text-amber-300 uppercase tracking-wider font-heading">
+                  <Sparkles className="w-3 h-3" />
+                  <span>UK Official 2026</span>
+                </div>
+                <h3 className="text-sm sm:text-base font-black font-heading text-white leading-tight">
+                  UK Student Visa &amp; CAS Checklist
+                </h3>
+                <p className="text-[11px] text-slate-300 leading-snug">
+                  CAS requirements, 28-day bank statement, TB test, and IHS health surcharge.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={handleDownloadUk}
+              disabled={downloadingDoc === 'uk'}
+              className="w-full px-4 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-xl font-heading shadow-lg shadow-amber-500/20 hover:scale-[1.02] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-300"
+            >
+              <Download className={`w-4 h-4 text-slate-950 ${downloadingDoc === 'uk' ? 'animate-bounce' : ''}`} />
+              <span>{downloadingDoc === 'uk' ? 'Downloading...' : 'Download UK Checklist (PDF)'}</span>
+            </button>
+          </div>
           {/* Turkey Official Checklist Download Card */}
           <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-[#7A0000] text-white flex flex-col justify-between gap-4 shadow-xl border-2 border-red-500/40 relative overflow-hidden">
             <div className="flex items-start gap-3">

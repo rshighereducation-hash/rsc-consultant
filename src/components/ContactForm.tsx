@@ -48,6 +48,10 @@ interface ContactFormProps {
   onSuccess?: () => void;
 }
 
+// Empty by default => same-origin ("/api/..."), which works locally and on
+// Hostinger. Only set VITE_API_BASE_URL if the API lives on another domain.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
 const POPULAR_DESTINATIONS = [
   { slug: "uk", name: "United Kingdom", flag: "🇬🇧" },
   { slug: "germany", name: "Germany", flag: "🇩🇪" },
@@ -95,7 +99,8 @@ const POPULAR_CITIES = [
   "Charsadda",
   "Lahore",
 ];
-
+//logo
+import formLogo from "../assets/images/logo.png";
 /**
  * Uploadable Brand Logo Header Component for the Application Form
  */
@@ -340,6 +345,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     useState(false);
 
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
   const normalizedDestSlug =
     preferredDestination === "turkey"
@@ -491,6 +497,37 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       () => {},
     );
 
+    // 6. Email the SAME generated PDF to the student's own email address.
+    // Runs after the download + sheet sync, and never blocks or breaks them.
+    if (leadPayload.email && pdfBase64) {
+      fetch(`${API_BASE_URL}/api/send-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: generatedAppId,
+          fullName: leadPayload.fullName,
+          email: leadPayload.email,
+          phone: leadPayload.phone,
+          destination: leadPayload.destination,
+          pdfBase64,
+          pdfFileName,
+        }),
+      })
+        .then((r) => r.json())
+        .then((data) =>
+          setEmailStatus(
+            data?.success
+              ? `A copy of your inquiry form was emailed to ${leadPayload.email}`
+              : "We could not email your form copy. Please save the downloaded PDF.",
+          ),
+        )
+        .catch(() =>
+          setEmailStatus(
+            "We could not email your form copy. Please save the downloaded PDF.",
+          ),
+        );
+    }
+
     const token = GoogleIntegrationService.getAccessToken();
     if (token) {
       try {
@@ -506,7 +543,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             GoogleIntegrationService.sendNotificationEmail(
               token,
               leadPayload as any,
-              "iqbalmansoor55@gmail.com", //my email
+              "rshighereducation@gmail.com", //my email
             ),
             GoogleIntegrationService.uploadPdfToDrive(
               token,
@@ -1497,6 +1534,14 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             <span>{syncStatus}</span>
           </div>
         )}
+
+        {/* Email Delivery Status Badge */}
+        {emailStatus && (
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+            <Mail className="w-4 h-4 text-emerald-600" />
+            <span>{emailStatus}</span>
+          </div>
+        )}
       </div>
     );
   }
@@ -1512,7 +1557,14 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       {/* Brand Header with Authentic RS Uploadable Official Logo */}
       <div className="flex flex-col items-center justify-center text-center gap-3 pb-6 border-b border-slate-100">
         {/* Uploadable Brand Logo Header */}
-        <FormLogoUploader height={85} />
+        <div className="w-28 h-28 sm:w-32 sm:h-32 overflow-hidden flex items-center justify-center">
+          <img
+            src={formLogo}
+            alt="RS Higher Education Consultants form-logo"
+            className="w-full h-full max-w-full object-contain drop-shadow-xs "
+            style={{ height: "85px", width: "auto" }}
+          />
+        </div>
 
         <div className="space-y-1">
           <div className="flex flex-wrap items-center justify-center gap-2">

@@ -14,8 +14,10 @@ import {
 import { BUSINESS_INFO } from "../data/businessInfo";
 import { useBrand } from "../context/BrandContext";
 import defaultFaqImg from "../assets/images/faq.jpeg";
-import { RSOfficialEmblem } from "./RSLogo";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+
+//logo
+import logoImg from "../assets/images/ceo-logo.jpeg";
 
 export const FAQSection: React.FC = () => {
   const { customFaqBanner, openFaqBannerModal } = useBrand();
@@ -91,8 +93,12 @@ export const FAQSection: React.FC = () => {
 
             {/* Top-Left Official RS Brand Badge */}
             <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 flex items-center gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-white/20 shadow-xl">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center p-0.5 border border-red-500 shadow-xs shrink-0">
-                <RSOfficialEmblem size="xs" variant="circle" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center p-0.5 border border-red-500 shadow-xs shrink-0  rounded-full overflow-hidden ">
+                <img
+                  src={logoImg}
+                  alt=""
+                  className=" rounded-full overflow-hidden flex items-center justify-center"
+                />
               </div>
               <div className="text-left">
                 <span className="text-[11px] sm:text-xs font-black text-white font-heading tracking-wide uppercase leading-tight block">

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { generateGermanyChecklistPDF } from '../utils/germanyPdfGenerator';
-import { BUSINESS_INFO } from '../data/businessInfo';
-import { useBrand } from '../context/BrandContext';
+import React, { useState } from "react";
+import { generateGermanyChecklistPDF } from "../utils/germanyPdfGenerator";
+import { BUSINESS_INFO } from "../data/businessInfo";
+import { useBrand } from "../context/BrandContext";
 import {
   Download,
   FileCheck2,
@@ -18,17 +18,14 @@ import {
   Building2,
   Calendar,
   CreditCard,
-  FileText
-} from 'lucide-react';
+  FileText,
+} from "lucide-react";
 
 export const GermanyChecklistSection: React.FC = () => {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const {
-    customGermanyChecklistPdf,
-    customGermanyChecklistName
-  } = useBrand();
+  const { customGermanyChecklistPdf, customGermanyChecklistName } = useBrand();
 
   const toggleCheck = (id: string) => {
     setCheckedItems((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -38,9 +35,11 @@ export const GermanyChecklistSection: React.FC = () => {
     setIsDownloading(true);
     try {
       if (customGermanyChecklistPdf) {
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = customGermanyChecklistPdf;
-        a.download = customGermanyChecklistName || 'Germany_Checklist_RS_Higher_Education.pdf';
+        a.download =
+          customGermanyChecklistName ||
+          "Germany_Checklist_RS_Higher_Education.pdf";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -48,7 +47,7 @@ export const GermanyChecklistSection: React.FC = () => {
         generateGermanyChecklistPDF();
       }
     } catch (e) {
-      console.error('Error generating PDF:', e);
+      console.error("Error generating PDF:", e);
     } finally {
       setTimeout(() => setIsDownloading(false), 800);
     }
@@ -80,7 +79,9 @@ export const GermanyChecklistSection: React.FC = () => {
               Study in Germany: University & Embassy Visa Checklist
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Official document roadmap for Pakistani applicants applying to tuition-free German Public Universities, Uni-Assist portals, and the German Embassy Islamabad / Consulate Karachi.
+              Official document roadmap for Pakistani applicants applying to
+              tuition-free German Public Universities, Uni-Assist portals, and
+              the German Embassy Islamabad / Consulate Karachi.
             </p>
 
             {/* Quick Readiness Progress */}
@@ -92,7 +93,8 @@ export const GermanyChecklistSection: React.FC = () => {
                 />
               </div>
               <span className="text-xs font-bold text-amber-300">
-                {completedCount} of {totalItems} items ready ({progressPercent}%)
+                {completedCount} of {totalItems} items ready ({progressPercent}
+                %)
               </span>
             </div>
           </div>
@@ -104,10 +106,19 @@ export const GermanyChecklistSection: React.FC = () => {
               disabled={isDownloading}
               id="germany-download-pdf-btn"
               className="px-5 py-3.5 bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] text-white font-black text-xs sm:text-sm rounded-2xl font-heading shadow-xl shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer border border-red-400/30"
-              title={customGermanyChecklistPdf ? `Download custom: ${customGermanyChecklistName}` : "Download Official PDF Checklist"}
-            >
-              <Download className={`w-5 h-5 ${isDownloading ? 'animate-bounce' : ''}`} />
-              <span>{isDownloading ? 'Generating PDF...' : 'Download Official PDF Checklist'}</span>
+              title={
+                customGermanyChecklistPdf
+                  ? `Download custom: ${customGermanyChecklistName}`
+                  : "Download Official PDF Checklist"
+              }>
+              <Download
+                className={`w-5 h-5 ${isDownloading ? "animate-bounce" : ""}`}
+              />
+              <span>
+                {isDownloading
+                  ? "Generating PDF..."
+                  : "Download Official PDF Checklist"}
+              </span>
               {customGermanyChecklistPdf && (
                 <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase tracking-wider">
                   Custom
@@ -118,8 +129,7 @@ export const GermanyChecklistSection: React.FC = () => {
             <button
               onClick={handlePrint}
               id="germany-print-checklist-btn"
-              className="px-5 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm rounded-2xl font-heading border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
+              className="px-5 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm rounded-2xl font-heading border border-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
               <Printer className="w-4 h-4" />
               <span>Print Checklist</span>
             </button>
@@ -157,7 +167,9 @@ export const GermanyChecklistSection: React.FC = () => {
               </p>
               <p className="flex items-center md:justify-end gap-1.5 text-[11px] text-slate-500">
                 <MapPin className="w-3.5 h-3.5 text-[#DB0303]" />
-                <span>{BUSINESS_INFO.address.office}, Deans Trade Centre, Peshawar</span>
+                <span>
+                  {BUSINESS_INFO.address.office}, Deans Trade Centre, Peshawar
+                </span>
               </p>
             </div>
           </div>
@@ -190,25 +202,31 @@ export const GermanyChecklistSection: React.FC = () => {
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_passport']}
-                    onChange={() => toggleCheck('app_passport')}
+                    checked={!!checkedItems["app_passport"]}
+                    onChange={() => toggleCheck("app_passport")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Valid Passport</p>
-                    <p className="text-xs text-slate-500">– Photo and Signature Page (Scan Copy)</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Valid Passport
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      – Photo and Signature Page (Scan Copy)
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_transcripts']}
-                    onChange={() => toggleCheck('app_transcripts')}
+                    checked={!!checkedItems["app_transcripts"]}
+                    onChange={() => toggleCheck("app_transcripts")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-1">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Educational Transcripts & Certificates</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Educational Transcripts & Certificates
+                    </p>
                     <ul className="text-xs text-slate-600 space-y-0.5 list-disc list-inside">
                       <li>Matric DMC & Certificate</li>
                       <li>Intermediate (FSc) DMC & Certificate</li>
@@ -220,65 +238,85 @@ export const GermanyChecklistSection: React.FC = () => {
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_lor']}
-                    onChange={() => toggleCheck('app_lor')}
+                    checked={!!checkedItems["app_lor"]}
+                    onChange={() => toggleCheck("app_lor")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Reference Letters</p>
-                    <p className="text-xs text-slate-500">– Two reference letters, not older than 6 months</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Reference Letters
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      – Two reference letters, not older than 6 months
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_photo']}
-                    onChange={() => toggleCheck('app_photo')}
+                    checked={!!checkedItems["app_photo"]}
+                    onChange={() => toggleCheck("app_photo")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Passport-size Photograph</p>
-                    <p className="text-xs text-slate-500">– Required in soft copy (scanned) as well</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Passport-size Photograph
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      – Required in soft copy (scanned) as well
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_contact']}
-                    onChange={() => toggleCheck('app_contact')}
+                    checked={!!checkedItems["app_contact"]}
+                    onChange={() => toggleCheck("app_contact")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Contact Information</p>
-                    <p className="text-xs text-slate-500">– Valid Contact Number & Email Address</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Contact Information
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      – Valid Contact Number & Email Address
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_english']}
-                    onChange={() => toggleCheck('app_english')}
+                    checked={!!checkedItems["app_english"]}
+                    onChange={() => toggleCheck("app_english")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">English Proficiency Certificate</p>
-                    <p className="text-xs text-slate-500">– IELTS / TOEFL, if available</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      English Proficiency Certificate
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      – IELTS / TOEFL, if available
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['app_cv']}
-                    onChange={() => toggleCheck('app_cv')}
+                    checked={!!checkedItems["app_cv"]}
+                    onChange={() => toggleCheck("app_cv")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Updated CV</p>
-                    <p className="text-xs text-slate-500">– in Europass CV format</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Updated CV
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      – in Europass CV format
+                    </p>
                   </div>
                 </label>
               </div>
@@ -291,16 +329,28 @@ export const GermanyChecklistSection: React.FC = () => {
               </h5>
               <div className="space-y-2.5">
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <p className="text-xs font-bold text-slate-900">Matric DMC & Certificate</p>
-                  <p className="text-xs font-bold text-[#DB0303]">Board → IBCC → MOFA</p>
+                  <p className="text-xs font-bold text-slate-900">
+                    Matric DMC & Certificate
+                  </p>
+                  <p className="text-xs font-bold text-[#DB0303]">
+                    Board → IBCC → MOFA
+                  </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <p className="text-xs font-bold text-slate-900">FSc / Intermediate DMC & Certificate</p>
-                  <p className="text-xs font-bold text-[#DB0303]">Board → IBCC → MOFA</p>
+                  <p className="text-xs font-bold text-slate-900">
+                    FSc / Intermediate DMC & Certificate
+                  </p>
+                  <p className="text-xs font-bold text-[#DB0303]">
+                    Board → IBCC → MOFA
+                  </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <p className="text-xs font-bold text-slate-900">Bachelor / Postgraduate Degree & Transcript</p>
-                  <p className="text-xs font-bold text-[#DB0303]">University → HEC → MOFA</p>
+                  <p className="text-xs font-bold text-slate-900">
+                    Bachelor / Postgraduate Degree & Transcript
+                  </p>
+                  <p className="text-xs font-bold text-[#DB0303]">
+                    University → HEC → MOFA
+                  </p>
                 </div>
               </div>
             </div>
@@ -312,12 +362,20 @@ export const GermanyChecklistSection: React.FC = () => {
               </h5>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div className="p-3 rounded-xl bg-red-50/60 border border-red-200 space-y-1">
-                  <p className="text-slate-600 font-medium">First Application</p>
-                  <p className="text-lg font-black text-[#DB0303] font-heading">€75</p>
+                  <p className="text-slate-600 font-medium">
+                    First Application
+                  </p>
+                  <p className="text-lg font-black text-[#DB0303] font-heading">
+                    €75
+                  </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <p className="text-slate-600 font-medium">Each Additional Application</p>
-                  <p className="text-lg font-black text-slate-900 font-heading">€30</p>
+                  <p className="text-slate-600 font-medium">
+                    Each Additional Application
+                  </p>
+                  <p className="text-lg font-black text-slate-900 font-heading">
+                    €30
+                  </p>
                 </div>
               </div>
             </div>
@@ -329,7 +387,11 @@ export const GermanyChecklistSection: React.FC = () => {
                 <span>NOTE — ENROLMENT FEES:</span>
               </p>
               <p className="leading-relaxed">
-                After receiving an admission offer from a Public University, students must pay the semester enrolment fee (<strong>Semesterbeitrag</strong>). This fee is <strong>NOT fixed</strong> — it varies by university (€150 to €350/semester).
+                After receiving an admission offer from a Public University,
+                students must pay the semester enrolment fee (
+                <strong>Semesterbeitrag</strong>). This fee is{" "}
+                <strong>NOT fixed</strong> — it varies by university (€150 to
+                €350/semester).
               </p>
             </div>
           </div>
@@ -352,24 +414,28 @@ export const GermanyChecklistSection: React.FC = () => {
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_admission']}
-                    onChange={() => toggleCheck('visa_admission')}
+                    checked={!!checkedItems["visa_admission"]}
+                    onChange={() => toggleCheck("visa_admission")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">University Enrolment Letter / Admission Letter</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      University Enrolment Letter / Admission Letter
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_blocked']}
-                    onChange={() => toggleCheck('visa_blocked')}
+                    checked={!!checkedItems["visa_blocked"]}
+                    onChange={() => toggleCheck("visa_blocked")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-1">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Blocked Account (Sperrkonto) Confirmation</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Blocked Account (Sperrkonto) Confirmation
+                    </p>
                     <p className="text-xs text-slate-600 font-semibold text-[#DB0303]">
                       – Current requirement: €11,904/year (€992/month) — 2026
                     </p>
@@ -382,78 +448,92 @@ export const GermanyChecklistSection: React.FC = () => {
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_passport']}
-                    onChange={() => toggleCheck('visa_passport')}
+                    checked={!!checkedItems["visa_passport"]}
+                    onChange={() => toggleCheck("visa_passport")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Valid Passport (min. 6 months validity)</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Valid Passport (min. 6 months validity)
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_form']}
-                    onChange={() => toggleCheck('visa_form')}
+                    checked={!!checkedItems["visa_form"]}
+                    onChange={() => toggleCheck("visa_form")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Completed & Signed National (D) Visa Application Form</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Completed & Signed National (D) Visa Application Form
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_photo']}
-                    onChange={() => toggleCheck('visa_photo')}
+                    checked={!!checkedItems["visa_photo"]}
+                    onChange={() => toggleCheck("visa_photo")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Biometric Passport-size Photographs</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Biometric Passport-size Photographs
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_appt']}
-                    onChange={() => toggleCheck('visa_appt')}
+                    checked={!!checkedItems["visa_appt"]}
+                    onChange={() => toggleCheck("visa_appt")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Visa Appointment Confirmation</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Visa Appointment Confirmation
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_insurance']}
-                    onChange={() => toggleCheck('visa_insurance')}
+                    checked={!!checkedItems["visa_insurance"]}
+                    onChange={() => toggleCheck("visa_insurance")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Travel / Health Insurance (valid for initial stay)</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Travel / Health Insurance (valid for initial stay)
+                    </p>
                   </div>
                 </label>
 
                 <label className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-red-50/40 transition-colors cursor-pointer group">
                   <input
                     type="checkbox"
-                    checked={!!checkedItems['visa_sop']}
-                    onChange={() => toggleCheck('visa_sop')}
+                    checked={!!checkedItems["visa_sop"]}
+                    onChange={() => toggleCheck("visa_sop")}
                     className="mt-0.5 w-4 h-4 rounded text-[#DB0303] focus:ring-red-500"
                   />
                   <div className="space-y-0.5">
-                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">Motivation Letter / Statement of Purpose</p>
+                    <p className="font-bold text-slate-900 group-hover:text-[#DB0303]">
+                      Motivation Letter / Statement of Purpose
+                    </p>
                   </div>
                 </label>
               </div>
 
               <p className="text-xs text-slate-500 italic">
-                * In addition, all documents listed under the Application Checklist (left side) are also required for the visa application.
+                * In addition, all documents listed under the Application
+                Checklist (left side) are also required for the visa
+                application.
               </p>
             </div>
 
@@ -464,7 +544,9 @@ export const GermanyChecklistSection: React.FC = () => {
                 <span>IMPORTANT NOTE:</span>
               </p>
               <p className="leading-relaxed">
-                We will join the waiting list. The queue may be lengthy, so you will have to wait for your turn due to the large volume of student applications at the German Embassy.
+                We will join the waiting list. The queue may be lengthy, so you
+                will have to wait for your turn due to the large volume of
+                student applications at the German Embassy.
               </p>
             </div>
 
@@ -474,7 +556,11 @@ export const GermanyChecklistSection: React.FC = () => {
                 INTAKES IN GERMANY:
               </p>
               <p className="text-slate-600">
-                Germany offers two intakes — <strong className="text-[#DB0303]">Major Intake: Winter Intake (September)</strong> | <strong>Minor Intake: Summer Intake (April)</strong>.
+                Germany offers two intakes —{" "}
+                <strong className="text-[#DB0303]">
+                  Major Intake: Winter Intake (September)
+                </strong>{" "}
+                | <strong>Minor Intake: Summer Intake (April)</strong>.
               </p>
             </div>
           </div>
@@ -504,7 +590,8 @@ export const GermanyChecklistSection: React.FC = () => {
                   </td>
                   <td className="p-3.5 font-black text-[#DB0303]">€75</td>
                   <td className="p-3.5 text-xs text-slate-500">
-                    One-time fee for the first university application via Uni-Assist
+                    One-time fee for the first university application via
+                    Uni-Assist
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50">
@@ -520,9 +607,12 @@ export const GermanyChecklistSection: React.FC = () => {
                   <td className="p-3.5 font-bold text-slate-900">
                     Semester Enrolment Fee (Semesterbeitrag)
                   </td>
-                  <td className="p-3.5 font-semibold text-slate-800">Varies by university</td>
+                  <td className="p-3.5 font-semibold text-slate-800">
+                    Varies by university
+                  </td>
                   <td className="p-3.5 text-xs text-slate-500">
-                    Paid only after receiving an official admission offer; not fixed university-to-university
+                    Paid only after receiving an official admission offer; not
+                    fixed university-to-university
                   </td>
                 </tr>
                 <tr className="hover:bg-red-50/30 bg-red-50/20">
@@ -530,10 +620,15 @@ export const GermanyChecklistSection: React.FC = () => {
                     Blocked Account (Sperrkonto) — 2026 requirement
                   </td>
                   <td className="p-3.5 font-black text-[#DB0303]">
-                    €11,904/year <span className="text-xs text-slate-600 block font-medium">(€992/month)</span>
+                    €11,904/year{" "}
+                    <span className="text-xs text-slate-600 block font-medium">
+                      (€992/month)
+                    </span>
                   </td>
                   <td className="p-3.5 text-xs text-slate-600 font-medium">
-                    Proof-of-funds deposit required for the visa; remains accessible to the student after arrival in Germany — not a service fee
+                    Proof-of-funds deposit required for the visa; remains
+                    accessible to the student after arrival in Germany — not a
+                    service fee
                   </td>
                 </tr>
               </tbody>
@@ -541,7 +636,9 @@ export const GermanyChecklistSection: React.FC = () => {
           </div>
 
           <p className="text-xs text-slate-500 italic">
-            Note: The Blocked Account amount is not spent — it is a savings deposit that proves sufficient funds and remains accessible to the student after arrival in Germany.
+            Note: The Blocked Account amount is not spent — it is a savings
+            deposit that proves sufficient funds and remains accessible to the
+            student after arrival in Germany.
           </p>
         </div>
 
@@ -549,18 +646,19 @@ export const GermanyChecklistSection: React.FC = () => {
         <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center sm:text-left">
             <h5 className="text-sm font-black font-heading text-slate-900">
-              Need personalized assistance with your German University application?
+              Need personalized assistance with your German University
+              application?
             </h5>
             <p className="text-xs text-slate-600">
-              Visit RS Higher Education Consultants in Peshawar for end-to-end Uni-Assist and Embassy guidance.
+              Visit RS Higher Education Consultants in Peshawar for end-to-end
+              Uni-Assist and Embassy guidance.
             </p>
           </div>
 
           <button
             onClick={handleDownload}
             disabled={isDownloading}
-            className="px-6 py-3.5 bg-[#DB0303] hover:bg-[#B30000] text-white font-bold text-xs sm:text-sm rounded-xl font-heading shadow-md shadow-red-600/30 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer shrink-0"
-          >
+            className="px-6 py-3.5 bg-[#DB0303] hover:bg-[#B30000] text-white font-bold text-xs sm:text-sm rounded-xl font-heading shadow-md shadow-red-600/30 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer shrink-0">
             <Download className="w-4 h-4" />
             <span>Download Checklist (PDF)</span>
           </button>

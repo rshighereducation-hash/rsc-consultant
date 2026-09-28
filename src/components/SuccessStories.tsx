@@ -3,7 +3,8 @@ import { TESTIMONIALS_DATA } from "../data/testimonialsData";
 import { CountryFlag } from "./CountryFlag";
 import { useBrand } from "../context/BrandContext";
 import defaultSuccessImg from "../assets/images/succes.png";
-import { RSOfficialEmblem } from "./RSLogo";
+//logo
+import logoImg from "../assets/images/ceo-logo.jpeg";
 import {
   Quote,
   Star,
@@ -19,6 +20,9 @@ import {
   Trophy,
   Users,
 } from "lucide-react";
+
+//custom logo
+import bannerLogo from "../assets/images/ceo-logo.jpeg";
 
 interface SuccessStoriesProps {
   onOpenConsultation: () => void;
@@ -164,7 +168,11 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
                 className="absolute top-3.5 left-3.5 sm:top-5 sm:left-5 z-20 flex items-center gap-2.5 sm:gap-3 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-slate-950/90 backdrop-blur-md border border-white/25 shadow-2xl pointer-events-auto"
                 title="RS Higher Education Consultants - Official Verified Placement Network">
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white flex items-center justify-center p-0.5 border border-red-500 shadow-md shrink-0">
-                  <RSOfficialEmblem size="xs" variant="circle" />
+                  <img
+                    src={logoImg}
+                    alt=""
+                    className=" rounded-full overflow-hidden flex items-center justify-center"
+                  />
                 </div>
                 <div className="text-left">
                   <div className="text-[11px] sm:text-xs font-black text-white font-heading tracking-wide uppercase leading-tight flex items-center gap-1.5">
