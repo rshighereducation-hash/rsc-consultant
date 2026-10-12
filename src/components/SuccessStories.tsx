@@ -27,11 +27,15 @@ import bannerLogo from "../assets/images/ceo-logo.jpeg";
 interface SuccessStoriesProps {
   onOpenConsultation: () => void;
   showBanner?: boolean;
+  limit?: number;
+  onViewAll?: () => void;
 }
 
 export const SuccessStories: React.FC<SuccessStoriesProps> = ({
   onOpenConsultation,
   showBanner = true,
+  limit,
+  onViewAll,
 }) => {
   const {
     customSuccessBanner,
@@ -95,6 +99,10 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
     return TESTIMONIALS_DATA.filter((t) => t.destination === selectedCountry);
   }, [selectedCountry]);
 
+  const displayTestimonials = limit
+    ? filteredTestimonials.slice(0, limit)
+    : filteredTestimonials;
+
   return (
     <section
       id="success-stories-section"
@@ -102,12 +110,13 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
+          {/* <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Real Student Experiences</span>
-          </div>
+          </div> */}
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 font-heading tracking-tight">
-            Hear From Our Global Scholars
+            Hear From{" "}
+            <span className=" text-[#DB0303] ">Our Global Scholars</span>
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
             Read verified success reviews from Pakistani students placed in
@@ -216,9 +225,11 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTestimonials.map((item) => (
+          {displayTestimonials.map((item, index) => (
             <div
               key={item.id}
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
               id={`testimonial-${item.id}`}
               className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 hover:border-red-300 hover:shadow-xl hover:shadow-red-950/5 transition-all duration-300 flex flex-col justify-between space-y-5 relative group hover:-translate-y-1">
               <div className="space-y-4">
@@ -287,7 +298,20 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = ({
               </div>
             </div>
           ))}
+          {/* view all buttons */}
         </div>
+        {limit && filteredTestimonials.length > limit && onViewAll && (
+          <div className="mt-8 w-full flex justify-center">
+            <div className="mt-8 w-full flex justify-center px-4">
+              <button
+                onClick={onViewAll}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#DB0303] hover:bg-[#B30000] text-white text-sm font-bold rounded-xl font-heading shadow-lg hover:scale-105 transition-all cursor-pointer">
+                <span>View All Success Stories</span>
+                <ArrowRight className="w-4 h-4 shrink-0" />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* CTA Banner */}
         <div className="mt-14 p-8 bg-gradient-to-r from-[#DB0303] to-[#B30000] rounded-3xl text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl shadow-red-600/20">

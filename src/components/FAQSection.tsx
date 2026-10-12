@@ -62,12 +62,12 @@ export const FAQSection: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
+          {/* <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Got Questions? We Have Verified Answers</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 font-heading tracking-tight">
-            Frequently Asked Questions
+          </div> */}
+          <h2 className=" text-3xl sm:text-4xl lg:text-5xl font-black text-[#DB0303] font-heading tracking-tight">
+            Frequently <span className=" text-[#000] ">Asked</span> Questions
           </h2>
           <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
             Clear, transparent guidance on admissions, visa approvals, bank
@@ -92,14 +92,14 @@ export const FAQSection: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/30 pointer-events-none" />
 
             {/* Top-Left Official RS Brand Badge */}
-            <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 flex items-center gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-white/20 shadow-xl">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center p-0.5 border border-red-500 shadow-xs shrink-0  rounded-full overflow-hidden ">
+            {/* <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 flex items-center gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-white/20 shadow-xl">
+              {/* <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center p-0.5 border border-red-500 shadow-xs shrink-0  rounded-full overflow-hidden ">
                 <img
                   src={logoImg}
                   alt=""
                   className=" rounded-full overflow-hidden flex items-center justify-center"
                 />
-              </div>
+              </div> *
               <div className="text-left">
                 <span className="text-[11px] sm:text-xs font-black text-white font-heading tracking-wide uppercase leading-tight block">
                   RS Higher Education
@@ -108,15 +108,15 @@ export const FAQSection: React.FC = () => {
                   Academic Convocation &amp; Mentorship
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Bottom Floating Information Overlay */}
             <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 text-white z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="space-y-1.5 max-w-xl">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600/90 border border-red-400 text-[10px] font-bold tracking-wider uppercase">
+                {/* <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600/90 border border-red-400 text-[10px] font-bold tracking-wider uppercase">
                   <GraduationCap className="w-3 h-3 text-amber-300" />
                   <span>Real Academic Experience</span>
-                </div>
+                </div> */}
                 <h3 className="text-lg sm:text-2xl font-black font-heading tracking-tight text-white drop-shadow-md">
                   Mentored by UK Graduates Who Walked the Same Path
                 </h3>
@@ -128,7 +128,7 @@ export const FAQSection: React.FC = () => {
               </div>
 
               {/* Verified Trust Badges */}
-              <div className="flex items-center gap-2 shrink-0">
+              {/* <div className="flex items-center gap-2 shrink-0">
                 <div className="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-center">
                   <div className="text-xs font-black text-amber-400 font-heading">
                     100%
@@ -145,7 +145,7 @@ export const FAQSection: React.FC = () => {
                     Hidden Charges
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

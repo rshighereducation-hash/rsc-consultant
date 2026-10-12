@@ -28,13 +28,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       className="py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Top Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
+        <div
+          className="text-center max-w-3xl mx-auto space-y-3"
+          data-aos="fade-up">
+          {/* <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Our Foundation & Identity</span>
-          </div>
+          </div> */}
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 font-heading tracking-tight">
-            About RS Higher Education Consultants
+            About <span className=" text-[#DB0303] ">RS Higher Education </span>
+            Consultants
           </h2>
           <p className="text-slate-600 text-base sm:text-lg">
             Empowering Pakistani students with ethical, transparent, and
@@ -132,7 +135,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
 
         {/* Mission & Vision Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/80 hover:border-red-200 shadow-sm space-y-3">
+          <div
+            className="p-8 rounded-3xl bg-white border border-slate-200/80 hover:border-red-200 shadow-sm space-y-3"
+            data-aos="fade-right">
             <div className="p-3.5 rounded-2xl bg-red-50 text-[#DB0303] w-fit">
               <Target className="w-6 h-6" />
             </div>
@@ -148,7 +153,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             </p>
           </div>
 
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/80 hover:border-red-200 shadow-sm space-y-3">
+          <div
+            className="p-8 rounded-3xl bg-white border border-slate-200/80 hover:border-red-200 shadow-sm space-y-3"
+            data-aos="fade-left">
             <div className="p-3.5 rounded-2xl bg-red-50 text-[#DB0303] w-fit">
               <Eye className="w-6 h-6" />
             </div>

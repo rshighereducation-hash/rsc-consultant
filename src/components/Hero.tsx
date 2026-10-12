@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent, DragEvent } from "react";
 import { CountryFlag } from "./CountryFlag";
 import { useBrand } from "../context/BrandContext";
-import HamzaImage from "../assets/images/Hamza.jpeg";
+import HamzaImage from "../assets/images/Hamza.webp";
 import {
   ArrowRight,
   Globe2,
@@ -257,14 +257,6 @@ export const Hero: React.FC<HeroProps> = ({
       slugSeq: "12",
       seq: "12",
     },
-    {
-      name: "Italy",
-      flag: "🇨🇳",
-      tag: "CSC Fully Funded & MBBS",
-      slug: "italy",
-      region: "europe",
-      seq: "13",
-    },
 
     // 13-16: Asia & Mediterranean Study Hubs
     {
@@ -273,7 +265,7 @@ export const Hero: React.FC<HeroProps> = ({
       tag: "Turkiye Burslari & No IELTS",
       slug: "turkiye",
       region: "asia",
-      seq: "14",
+      seq: "13",
     },
     {
       name: "Cyprus",
@@ -281,7 +273,7 @@ export const Hero: React.FC<HeroProps> = ({
       tag: "Fast Visa & Low Cost",
       slug: "south-cyprus",
       region: "asia",
-      seq: "15",
+      seq: "14",
     },
     {
       name: "Malaysia",
@@ -289,7 +281,7 @@ export const Hero: React.FC<HeroProps> = ({
       tag: "eVAL Fast Visa & UK Dual",
       slug: "malaysia",
       region: "asia",
-      seq: "16",
+      seq: "15",
     },
     {
       name: "China",
@@ -297,7 +289,7 @@ export const Hero: React.FC<HeroProps> = ({
       tag: "CSC Fully Funded & MBBS",
       slug: "china",
       region: "asia",
-      seq: "17",
+      seq: "16",
     },
   ];
 
@@ -716,9 +708,11 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Core Messaging & CTAs */}
-          <div className="lg:col-span-7 text-left space-y-6 sm:space-y-7">
+          <div
+            className="lg:col-span-7 text-left space-y-6 sm:space-y-7"
+            data-aos="fade-right">
             {/* Top Brand Pill with Live Pulse */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-red-200 shadow-xs shadow-red-100">
+            {/* <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-red-200 shadow-xs shadow-red-100">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DB0303] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#DB0303]" />
@@ -726,7 +720,7 @@ export const Hero: React.FC<HeroProps> = ({
               <span className="text-xs font-bold tracking-wide uppercase text-[#DB0303] font-heading">
                 RS Higher Education Consultants • Deans Trade Centre Peshawar
               </span>
-            </div>
+            </div> */}
 
             {/* Main Headline */}
             <div className="space-y-3">
@@ -763,7 +757,7 @@ export const Hero: React.FC<HeroProps> = ({
               <button
                 id="hero-book-btn"
                 onClick={onOpenConsultation}
-                className="px-7 py-4 text-sm sm:text-base font-bold text-white bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] active:scale-[0.98] shadow-xl shadow-red-600/30 rounded-2xl transition-all font-heading flex items-center justify-center gap-3 group">
+                className="px-7 py-4 text-sm sm:text-base font-bold cursor-pointer text-white bg-gradient-to-r from-[#DB0303] to-[#B30000] hover:from-[#B30000] hover:to-[#8F0000] active:scale-[0.98] shadow-xl shadow-red-600/30 rounded-2xl transition-all font-heading flex items-center justify-center gap-3 group">
                 <span>Book Free Consultation</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
               </button>
@@ -771,24 +765,24 @@ export const Hero: React.FC<HeroProps> = ({
               <button
                 id="hero-explore-btn"
                 onClick={onExploreDestinations}
-                className="px-6 py-4 text-sm sm:text-base font-bold text-slate-800 bg-white hover:bg-red-50/50 border border-slate-200 hover:border-red-300 rounded-2xl shadow-xs transition-all font-heading flex items-center justify-center gap-2">
+                className="px-6 py-4 text-sm sm:text-base font-bold cursor-pointer text-slate-800 bg-white hover:bg-red-50/50 border border-slate-200 hover:border-red-300 rounded-2xl shadow-xs transition-all font-heading flex items-center justify-center gap-2">
                 <Globe2 className="w-5 h-5 text-[#DB0303]" />
-                <span>Explore 17 Countries</span>
+                <span>Explore 16 Countries</span>
               </button>
             </div>
 
             {/* All 16 Global Destination Chips in Proper Sequence */}
             <div className="pt-4 border-t border-slate-200/80 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <p className="text-xs uppercase tracking-wider text-slate-700 font-bold flex items-center gap-1.5 font-heading">
+                {/* <p className="text-xs uppercase tracking-wider text-slate-700 font-bold flex items-center gap-1.5 font-heading">
                   <Sparkles className="w-3.5 h-3.5 text-[#DB0303]" />
-                  <span>17 Global Destinations (In Proper Sequence):</span>
-                </p>
+                  <span>16 Global Destinations (In Proper Sequence):</span>
+                </p> */}
 
                 {/* Region Category Sequence Tabs */}
                 <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
                   {[
-                    { id: "all", label: "All 17" },
+                    { id: "all", label: "All 16" },
                     { id: "anglophone", label: "Anglophone (01-04)" },
                     { id: "europe", label: "Europe (05-12)" },
                     { id: "asia", label: "Asia & Med (13-16)" },
@@ -840,7 +834,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Right Column: High-End Visual Card & Animated Elements */}
-          <div className="lg:col-span-5 relative">
+          <div className="lg:col-span-5 relative" data-aos="fade-left">
             {/* Background Glow */}
             <div className="absolute -inset-2 bg-gradient-to-r from-red-500 to-amber-500 rounded-3xl opacity-20 blur-xl -z-10" />
 
@@ -855,12 +849,12 @@ export const Hero: React.FC<HeroProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-slate-950/30" />
 
                 {/* Floating Live Badge Top Left (Compact) */}
-                <div className="absolute top-2.5 left-2.5 backdrop-blur-md bg-white/95 border border-red-100 px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1.5 z-20">
+                {/* <div className="absolute top-2.5 left-2.5 backdrop-blur-md bg-white/95 border border-red-100 px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1.5 z-20">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#DB0303] animate-ping" />
                   <span className="text-[11px] font-extrabold text-slate-900 font-heading">
                     Admissions Open
                   </span>
-                </div>
+                </div> */}
 
                 {/* Overlay Content Bottom (Compact) */}
                 <div className="absolute bottom-2.5 left-2.5 right-2.5 space-y-1.5 z-10">
@@ -920,10 +914,10 @@ export const Hero: React.FC<HeroProps> = ({
                 Accredited Global Partner Universities (16 Leading Destinations)
               </span>
             </div>
-            <span className="text-[11px] text-slate-500 font-medium hidden sm:inline-block">
+            {/* <span className="text-[11px] text-slate-500 font-medium hidden sm:inline-block">
               Slow Smooth Scroll • USA, Canada, Germany, Türkiye, Cyprus, China
               & Australia
-            </span>
+            </span> */}
           </div>
 
           {/* Row 1: Global Universities (Slow Leftward Scroll) */}
@@ -980,9 +974,9 @@ export const Hero: React.FC<HeroProps> = ({
                 Graduate Route (PSW)
               </span>
             </div>
-            <span className="text-[11px] text-slate-500 font-medium hidden sm:inline-block">
+            {/* <span className="text-[11px] text-slate-500 font-medium hidden sm:inline-block">
               Slow Reverse Moving Scroll • Direct Accredited Portfolios
-            </span>
+            </span> */}
           </div>
 
           {/* Row 2: UK Universities (Slow Rightward Reverse Scroll) */}

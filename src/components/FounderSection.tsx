@@ -1,7 +1,7 @@
 import React from "react";
 import { BUSINESS_INFO } from "../data/businessInfo";
 import { useBrand } from "../context/BrandContext";
-import defaultCeoPhoto from "../assets/images/ceo.png";
+import defaultCeoPhoto from "../assets/images/ceo.webp";
 import { RSOfficialEmblem, RSBrandShowcaseCard } from "./RSLogo";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import {
@@ -52,10 +52,10 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
         {/* Section Heading Badge */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
+          {/* <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Executive Leadership & Vision</span>
-          </div>
+          </div> */}
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 font-heading tracking-tight">
             Founder & CEO Message
           </h2>
@@ -69,7 +69,9 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
         <div className="bg-white rounded-3xl border border-red-100 shadow-2xl shadow-red-950/5 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
             {/* Left Column: Founder Photo & Bio Card (5 cols) */}
-            <div className="lg:col-span-5 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white p-6 sm:p-10 flex flex-col justify-between relative">
+            <div
+              className="lg:col-span-5 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white p-6 sm:p-10 flex flex-col justify-between relative"
+              data-aos="fade-right">
               {/* Decorative Accent */}
               <div className="absolute top-0 right-0 w-48 h-48 bg-[#DB0303]/20 rounded-full blur-2xl pointer-events-none" />
 
@@ -127,7 +129,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
               </div>
 
               {/* Direct Reach Out Micro Card */}
-              <div className="mt-8 pt-6 border-t border-white/10 space-y-3 text-xs text-slate-300 relative z-10">
+              {/* <div className="mt-8 pt-6 border-t border-white/10 space-y-3 text-xs text-slate-300 relative z-10">
                 <div className="flex items-center gap-2.5">
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
                   <span>
@@ -150,7 +152,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                     {founder.phone}
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Right Column: Founder's Message & Core Commitments (7 cols) */}
@@ -175,17 +177,17 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                         </span>
                       </div>
 
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 text-[#DB0303] text-[11px] font-extrabold uppercase tracking-wider font-poppins shadow-xs border border-red-200/80 shrink-0">
+                      {/* <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 text-[#DB0303] text-[11px] font-extrabold uppercase tracking-wider font-poppins shadow-xs border border-red-200/80 shrink-0">
                         <Award className="w-3.5 h-3.5 text-amber-500" />
                         <span>Student-First Priority</span>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Main Quote Content with Poppins */}
                     <blockquote className="relative pl-3 sm:pl-4 space-y-2 border-l-4 border-[#DB0303]">
                       <p className="text-base sm:text-lg md:text-xl font-bold text-slate-950 leading-relaxed font-poppins">
-                        “True educational consultancy is not about selling
-                        visas—it is about{" "}
+                        “True educational consultancy is not about selling visas
+                        it is about{" "}
                         <span className="text-[#DB0303] font-extrabold">
                           unlocking human potential
                         </span>{" "}
@@ -215,7 +217,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                         <div>
                           <p className="text-xs font-black text-slate-900 font-poppins leading-tight flex items-center gap-1.5">
                             <span>{founder.name}</span>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            {/* <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> */}
                           </p>
                           <p className="text-[10px] text-slate-600 font-medium font-poppins leading-tight">
                             {founder.shortTitle}, {BUSINESS_INFO.brandName}
@@ -223,10 +225,10 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                         </div>
                       </div>
 
-                      <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 shadow-2xs font-poppins">
+                      {/* <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 shadow-2xs font-poppins">
                         <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                         <span>100% Verified Counsel</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -308,15 +310,15 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                     <p className="text-xs text-slate-500 font-medium">
                       Founder & CEO, RS Higher Education Consultants
                     </p>
-                    <p className="text-[11px] text-[#DB0303] font-semibold">
+                    {/* <p className="text-[11px] text-[#DB0303] font-semibold">
                       Peshawar, Khyber Pakhtunkhwa, Pakistan
-                    </p>
+                    </p> */}
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
+                  {/* <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
                     <HeartHandshake className="w-4 h-4 text-[#DB0303]" />
                     <span>Student-First Guarantee</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -356,7 +358,9 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
         </div>
 
         {/* 4 Core Pillars of Rahmat Shah's Leadership */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
+          data-aos="fade-up">
           {founder.pillars.map((pillar, idx) => (
             <div
               key={idx}

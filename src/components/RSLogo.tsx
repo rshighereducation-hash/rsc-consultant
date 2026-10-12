@@ -104,6 +104,7 @@ export const RSBrandShowcaseCard: React.FC<{
 
   return (
     <div
+      data-aos="fade-left"
       className={`relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-slate-900 via-[#1A0303] to-slate-950 text-white border border-red-500/30 shadow-2xl shadow-red-950/40 overflow-hidden group font-poppins ${className}`}>
       {/* Ambient glowing radial flares */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#DB0303]/30 rounded-full blur-3xl pointer-events-none group-hover:bg-[#DB0303]/40 transition-all duration-700" />
@@ -127,18 +128,18 @@ export const RSBrandShowcaseCard: React.FC<{
             <span className="text-xs font-extrabold uppercase tracking-widest text-amber-300 font-poppins block mx-auto">
               RS Higher Education Consultants
             </span>
-            <p className="text-[11px] text-slate-300 font-poppins">
+            {/* <p className="text-[11px] text-slate-300 font-poppins">
               Peshawar • Khyber Pakhtunkhwa • Pakistan
-            </p>
+            </p> */}
           </div>
         </div>
 
         {/* Right: Grammatically Correct Trust & Satisfaction Brand Statement */}
         <div className="lg:col-span-8 space-y-5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/15 border border-red-400/30 text-amber-300 text-xs font-bold tracking-wide font-poppins">
+          {/* <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/15 border border-red-400/30 text-amber-300 text-xs font-bold tracking-wide font-poppins">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>The Hallmark of Excellence</span>
-          </div>
+          </div> */}
 
           <div className="space-y-2">
             <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight font-poppins">
@@ -207,11 +208,11 @@ export const RSBrandShowcaseCard: React.FC<{
                 onClick={onOpenConsultation}
                 className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#DB0303] to-red-600 hover:from-red-600 hover:to-[#DB0303] text-white font-bold text-xs sm:text-sm font-poppins shadow-lg shadow-red-900/40 hover:scale-105 transition-all cursor-pointer flex items-center gap-2">
                 <span>Book Free Consultation</span>
-                <Sparkles className="w-4 h-4 text-amber-200" />
+                {/* <Sparkles className="w-4 h-4 text-amber-200" /> */}
               </button>
-              <span className="text-xs text-slate-400 font-poppins">
+              {/* <span className="text-xs text-slate-400 font-poppins">
                 Direct guidance from certified senior counselors in Peshawar
-              </span>
+              </span> */}
             </div>
           )}
         </div>

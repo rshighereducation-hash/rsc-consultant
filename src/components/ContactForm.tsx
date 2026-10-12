@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ALL_DESTINATIONS } from "../data/destinationsData";
 import { BUSINESS_INFO } from "../data/businessInfo";
+
 import {
   GoogleIntegrationService,
   USER_LINKED_SPREADSHEET_URL,
@@ -14,6 +15,7 @@ import { RSOfficialEmblem, RSOfficialFullLogo } from "./RSLogo";
 import { CountryFlag } from "./CountryFlag";
 import { useBrand } from "../context/BrandContext";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import formLogo from "../assets/images/logo.png";
 import {
   Send,
   CheckCircle2,
@@ -47,6 +49,8 @@ interface ContactFormProps {
   defaultDestination?: string;
   onSuccess?: () => void;
 }
+
+import axios from "axios";
 
 // Empty by default => same-origin ("/api/..."), which works locally and on
 // Hostinger. Only set VITE_API_BASE_URL if the API lives on another domain.
@@ -100,7 +104,6 @@ const POPULAR_CITIES = [
   "Lahore",
 ];
 //logo
-import formLogo from "../assets/images/logo.png";
 /**
  * Uploadable Brand Logo Header Component for the Application Form
  */
@@ -376,7 +379,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     setErrorMsg(null);
     setSyncStatus(null);
 
-    const generatedAppId = PdfGenerationService.getNextReferralId();
+    const response = await axios.post(`${API_BASE_URL}/api/generate-reference`);
+
+    const generatedAppId = response.data.applicationId;
     const formattedDate = new Date().toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
@@ -786,45 +791,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               {/* Center: Official RS Monogram Logo & Brand Text (or Custom Uploaded Brand Logo) */}
               <div
                 onClick={openFormLogoModal}
-                className="flex flex-col items-center text-center -mt-2 cursor-pointer group/formlogo relative"
+                className="flex flex-col items-center text-center -mt-2  group/formlogo relative"
                 title="Click to upload or change your official brand logo">
-                {activeLogo ? (
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={activeLogo}
-                      alt="RS Higher Education Consultants Official Logo"
-                      className="h-16 sm:h-20 max-w-[240px] sm:max-w-[280px] object-contain transition-transform group-hover/formlogo:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <span className="text-[9px] text-[#A30000] font-bold opacity-0 group-hover/formlogo:opacity-100 transition-opacity mt-0.5">
-                      Click to Change Logo
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <div className="relative flex items-center justify-center">
-                      <span className="text-4xl sm:text-5xl font-serif font-black text-[#A30000] tracking-tighter">
-                        RS
-                      </span>
-                      <span className="text-amber-500 text-base font-bold absolute -top-1 right-[-10px]">
-                        ✦
-                      </span>
-                    </div>
-                    <h1 className="text-xs sm:text-sm font-black text-[#A30000] tracking-wider uppercase font-heading -mt-1">
-                      HIGHER EDUCATION
-                    </h1>
-                    <div className="flex items-center gap-2 -mt-0.5">
-                      <span className="h-[1px] w-5 bg-[#A30000]" />
-                      <span className="text-[10px] font-semibold text-[#A30000] tracking-widest uppercase">
-                        CONSULTANTS
-                      </span>
-                      <span className="h-[1px] w-5 bg-[#A30000]" />
-                    </div>
-                    <span className="text-[9px] text-slate-400 font-medium opacity-0 group-hover/formlogo:opacity-100 transition-opacity mt-0.5">
-                      Click to Upload Real Logo
-                    </span>
-                  </div>
-                )}
+                <div className="flex flex-col items-center">
+                  <img
+                    src={formLogo}
+                    alt="RS Higher Education Consultants Official Logo"
+                    className="h-16 sm:h-20 max-w-[240px] sm:max-w-[280px] object-contain transition-transform group-hover/formlogo:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
               </div>
 
               {/* Right: DATE */}
@@ -1665,10 +1641,11 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             </label>
             <input
               id="form-dob"
-              type="text"
+              type="date"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
-              placeholder="e.g. 15/08/2001"
+              placeholder="mm/dd/yyyy"
+              maxLength={10}
               className="w-full bg-slate-50/80 border border-slate-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:border-[#DB0303] focus:ring-2 focus:ring-red-100 transition-all shadow-xs"
             />
           </div>

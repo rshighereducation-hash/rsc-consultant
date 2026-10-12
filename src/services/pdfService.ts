@@ -1,5 +1,7 @@
 import { jsPDF } from "jspdf";
 import { BUSINESS_INFO } from "../data/businessInfo";
+//pdf logo
+import PdfLogo from "../assets/images/logo.png";
 
 export interface AcademicRecord {
   degree: string;
@@ -66,6 +68,7 @@ export class PdfGenerationService {
       orientation: "portrait",
       unit: "mm",
       format: "a4",
+      compress: true,
     });
 
     const pageWidth = 210;
@@ -128,59 +131,22 @@ export class PdfGenerationService {
     doc.text(dateStr, pageWidth - margin - 42, 20);
 
     // Center: Official RS Monogram Logo & Brand Text (Or Custom Uploaded Logo Image)
+    // Center: Custom Logo
     const logoCenterX = pageWidth / 2;
-    let renderedCustomLogo = false;
 
-    if (data.customLogoUrl) {
-      try {
-        // Embed the user's custom uploaded brand logo
-        // Fits neatly between the referral box and date box (x: 65 to 145, y: 10 to 30)
-        doc.addImage(
-          data.customLogoUrl,
-          "PNG",
-          logoCenterX - 24,
-          10.5,
-          48,
-          20,
-          undefined,
-          "FAST",
-        );
-        renderedCustomLogo = true;
-      } catch (imgErr) {
-        console.warn(
-          "Could not embed custom logo in PDF, falling back to vector monogram:",
-          imgErr,
-        );
-        renderedCustomLogo = false;
-      }
-    }
-
-    if (!renderedCustomLogo) {
-      // Red Monogram RS
-      doc.setFont("times", "bold");
-      doc.setFontSize(26);
-      doc.setTextColor(185, 28, 28); // #B91C1C
-      doc.text("RS", logoCenterX - 11, 21);
-
-      // Four point star on the S
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      doc.setTextColor(219, 3, 3);
-      doc.text("+", logoCenterX + 7.5, 14.5);
-
-      // HIGHER EDUCATION
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(8);
-      doc.setTextColor(185, 28, 28);
-      doc.text("HIGHER EDUCATION", logoCenterX, 25, { align: "center" });
-
-      // - CONSULTANTS -
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(6.5);
-      doc.setTextColor(185, 28, 28);
-      doc.text("—  C O N S U L T A N T S  —", logoCenterX, 28, {
-        align: "center",
-      });
+    try {
+      doc.addImage(
+        PdfLogo,
+        "PNG",
+        logoCenterX - 24,
+        10.5,
+        45,
+        20,
+        undefined,
+        "FAST",
+      );
+    } catch (imgErr) {
+      console.warn("Could not embed custom logo in PDF:", imgErr);
     }
 
     // Header Title: ✦ INQUIRY FORM ✦ with gold diamond stars and horizontal rules
@@ -525,10 +491,11 @@ export class PdfGenerationService {
       doc.rect(x, y - 2.5, 2.7, 2.7, "FD");
 
       if (isChecked) {
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.5);
-        doc.setTextColor(185, 28, 28);
-        doc.text("X", x + 0.5, y - 0.4);
+        doc.setDrawColor(185, 28, 28);
+        doc.setLineWidth(0.6);
+
+        doc.line(x + 0.5, y - 1.2, x + 1.1, y - 0.5);
+        doc.line(x + 1.1, y - 0.5, x + 2.2, y - 1.8);
       }
 
       doc.setFont("helvetica", "normal");
@@ -1203,11 +1170,7 @@ export class PdfGenerationService {
    */
   static getWhatsAppDossierMessage(data: ApplicationPdfData): string {
     const currentYear = new Date().getFullYear();
-    const appId =
-      data.applicationId ||
-      (typeof window !== "undefined"
-        ? PdfGenerationService.peekCurrentReferralId()
-        : `RS-REF-${currentYear}-0001`);
+    const appId = data.applicationId || `RS-REF-${currentYear}-0001`;
     const studentName = cleanTextForPdf(data.fullName) || "Student";
     const text = `Assalam-o-Alaikum RS Consultants. I am ${studentName} (Ref: ${appId}). I am sending my official PDF Inquiry Form attached.`;
     return encodeURIComponent(text);

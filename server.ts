@@ -1,11 +1,23 @@
+import { generateReference } from "./src/utils/generateReference";
+
+import dns from "node:dns";
+dns.setDefaultResultOrder("ipv4first");
+
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 // import nodemailer for email
 import nodemailer from "nodemailer";
-import "dotenv/config";
+import Student from "./models/student";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import { connectDB } from "./db/mongodb";
 
 async function startServer() {
+  await connectDB();
+
   const app = express();
   //add the process.env.port for Hostinger
   const PORT = Number(process.env.PORT) || 3000;
@@ -136,9 +148,24 @@ Your objective:
       return res.json({ reply: null });
     }
   });
+  // Generate a new MongoDB reference number
+  app.post("/api/generate-reference", async (_req, res) => {
+    try {
+      const referenceNumber = await generateReference();
 
-  // In-memory leads storage for reliable data preservation
-  const storedLeads: any[] = [];
+      return res.status(200).json({
+        success: true,
+        applicationId: referenceNumber,
+      });
+    } catch (error) {
+      console.error("Reference generation error:", error);
+
+      return res.status(500).json({
+        success: false,
+        error: "Unable to generate reference number.",
+      });
+    }
+  });
 
   // Lead Generation / Contact submission endpoint
   app.post("/api/contact", async (req, res) => {
@@ -170,11 +197,11 @@ Your objective:
           error: "Please provide full name and WhatsApp/phone number.",
         });
       }
+      const referenceNumber = applicationId;
 
       const leadData = {
-        id:
-          applicationId ||
-          `RS-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
+        id: referenceNumber,
+        referenceNumber: referenceNumber,
         submittedAt: new Date().toLocaleString("en-GB", {
           dateStyle: "medium",
           timeStyle: "short",
@@ -194,7 +221,7 @@ Your objective:
         status: "NEW_INQUIRY",
       };
 
-      storedLeads.unshift(leadData);
+      await Student.create(leadData);
       // for pdf to email
 
       try {
@@ -333,16 +360,20 @@ WhatsApp: +92 334 4626284 | www.rshec.pk`,
   });
 
   // Get all leads
-  app.get("/api/leads", (_req, res) => {
-    res.json({
-      success: true,
-      total: storedLeads.length,
-      leads: storedLeads,
-    });
+  app.get("/api/leads", async (_req, res) => {
+    try {
+      const leads = await Student.find().sort({ createdAt: -1 }).lean();
+      return res.json({ success: true, total: leads.length, leads });
+    } catch (error) {
+      console.error("Error loading leads:", error);
+      return res
+        .status(500)
+        .json({ success: false, error: "Unable to load leads." });
+    }
   });
 
   // Export all leads directly as CSV download
-  app.get("/api/export-leads-csv", (_req, res) => {
+  app.get("/api/export-leads-csv", async (_req, res) => {
     const headers = [
       "Submission Date",
       "Application ID",
@@ -358,31 +389,39 @@ WhatsApp: +92 334 4626284 | www.rshec.pk`,
       "Student Notes",
     ];
 
-    const rows = storedLeads.map((l) =>
-      [
-        `"${l.submittedAt || ""}"`,
-        `"${l.id || ""}"`,
-        `"${(l.fullName || "").replace(/"/g, '""')}"`,
-        `"${(l.phone || "").replace(/"/g, '""')}"`,
-        `"${(l.email || "").replace(/"/g, '""')}"`,
-        `"${(l.city || "").replace(/"/g, '""')}"`,
-        `"${(l.destination || "").replace(/"/g, '""')}"`,
-        `"${(l.studyLevel || "").replace(/"/g, '""')}"`,
-        `"${(l.targetIntake || "").replace(/"/g, '""')}"`,
-        `"${(l.ieltsStatus || "").replace(/"/g, '""')}"`,
-        `"${(l.academicBackground || "").replace(/"/g, '""')}"`,
-        `"${(l.message || "").replace(/"/g, '""')}"`,
-      ].join(","),
-    );
+    try {
+      const leads = await Student.find().sort({ createdAt: -1 }).lean();
+      const rows = leads.map((l) =>
+        [
+          `"${l.submittedAt || ""}"`,
+          `"${l.id || ""}"`,
+          `"${(l.fullName || "").replace(/"/g, '""')}"`,
+          `"${(l.phone || "").replace(/"/g, '""')}"`,
+          `"${(l.email || "").replace(/"/g, '""')}"`,
+          `"${(l.city || "").replace(/"/g, '""')}"`,
+          `"${(l.destination || "").replace(/"/g, '""')}"`,
+          `"${(l.studyLevel || "").replace(/"/g, '""')}"`,
+          `"${(l.targetIntake || "").replace(/"/g, '""')}"`,
+          `"${(l.ieltsStatus || "").replace(/"/g, '""')}"`,
+          `"${(l.academicBackground || "").replace(/"/g, '""')}"`,
+          `"${(l.message || "").replace(/"/g, '""')}"`,
+        ].join(","),
+      );
 
-    const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
 
-    res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="RS_Consultants_Leads_${new Date().toISOString().slice(0, 10)}.csv"`,
-    );
-    res.status(200).send(csvContent);
+      res.setHeader("Content-Type", "text/csv; charset=utf-8");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="RS_Consultants_Leads_${new Date().toISOString().slice(0, 10)}.csv"`,
+      );
+      return res.status(200).send(csvContent);
+    } catch (error) {
+      console.error("Error exporting leads:", error);
+      return res
+        .status(500)
+        .json({ success: false, error: "Unable to export leads." });
+    }
   });
 
   // Quick Consultation booking endpoint
@@ -453,4 +492,10 @@ WhatsApp: +92 334 4626284 | www.rshec.pk`,
   });
 }
 
-startServer();
+startServer().catch((error) => {
+  console.error(
+    "Server startup failed:",
+    error instanceof Error ? error.message : "Unknown error",
+  );
+  process.exitCode = 1;
+});
