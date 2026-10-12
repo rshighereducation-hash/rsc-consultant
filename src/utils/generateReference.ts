@@ -1,4 +1,4 @@
-import Counter from "@/models/counter";
+import Counter from "@/models/Counter";
 
 export async function generateReference(): Promise<string> {
   const year = new Date().getFullYear();
