@@ -383,7 +383,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
+              {/* <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
                 <CountryFlag
                   countryCode={destination.slug}
                   countryName={destination.countryName}
@@ -391,9 +391,11 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                   size="sm"
                 />
                 <span>{destination.tagline}</span>
-              </div>
+              </div> */}
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-slate-900 leading-tight">
+              <h1
+                data-aos="fade-right"
+                className="text-3xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-slate-900 leading-tight">
                 Study in{" "}
                 <span className="text-[#DB0303]">
                   {destination.countryName}
@@ -401,12 +403,16 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                 for Pakistani Students
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
+              <p
+                data-aos="fade-right"
+                className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
                 {destination.overview}
               </p>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div
+                data-aos="fade-right"
+                className="pt-2 flex flex-wrap items-center gap-3">
                 {/* Germany: Only Germany Checklist */}
                 {isGermany && (
                   <button
@@ -833,6 +839,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {whyStudyList.map((reason, idx) => (
                   <div
+                    data-aos="fade-up"
                     key={idx}
                     className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-2 hover:border-red-300 hover:shadow-md transition-all hover:-translate-y-0.5">
                     <div className="flex items-center gap-2 text-xs font-bold text-[#DB0303] font-heading">
@@ -864,6 +871,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {popularFieldsList.map((field, fIdx) => (
                   <div
+                    data-aos="fade-up"
                     key={fIdx}
                     className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-2">
                     <div className="flex items-center gap-2">
@@ -894,7 +902,9 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
             </div>
 
             {/* Work & Career Rights */}
-            <div className="bg-white text-slate-900 rounded-3xl p-6 sm:p-10 border border-red-100 shadow-xl shadow-red-950/5 space-y-6">
+            <div
+              data-aos="fade-up"
+              className="bg-white text-slate-900 rounded-3xl p-6 sm:p-10 border border-red-100 shadow-xl shadow-red-950/5 space-y-6">
               <div className="space-y-1">
                 <span className="text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
                   Employment & Career Rights

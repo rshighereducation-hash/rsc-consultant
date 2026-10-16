@@ -144,7 +144,13 @@ export interface Testimonial {
 
 export interface FAQItem {
   id: string;
-  category: 'General' | 'Admissions' | 'Visas' | 'Scholarships' | 'Finances & Work' | 'RS Process';
+  category:
+    | "General"
+    | "Admissions"
+    | "Visas"
+    | "Scholarships"
+    | "Finances & Work"
+    | "RS Process";
   question: string;
   answer: string;
 }

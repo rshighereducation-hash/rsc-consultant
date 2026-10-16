@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {destinationsMegaOpen && (
                       <div
                         id="mega-menu-container"
-                        className="absolute left-[70%] -translate-x-1/2 top-full mt-2 w-[840px] max-w-[90vw] bg-white border border-red-100 rounded-3xl shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                        className="absolute left-[70%] -translate-x-1/2 top-full mt-[6px] w-[840px] max-w-[90vw] overflow-hidden bg-white border border-red-100 rounded-3xl shadow-2xl p-6 z-auto animate-in fade-in slide-in-from-top-2 duration-100 ">
                         <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-red-50">
                           <div className="flex items-center gap-2.5">
                             <div className="p-2 bg-red-50 text-[#DB0303] rounded-xl">
