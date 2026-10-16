@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ALL_DESTINATIONS } from "../data/destinationsData";
 import { BUSINESS_INFO } from "../data/businessInfo";
+
 import {
   GoogleIntegrationService,
   USER_LINKED_SPREADSHEET_URL,
@@ -14,6 +15,7 @@ import { RSOfficialEmblem, RSOfficialFullLogo } from "./RSLogo";
 import { CountryFlag } from "./CountryFlag";
 import { useBrand } from "../context/BrandContext";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import formLogo from "../assets/images/logo.png";
 import {
   Send,
   CheckCircle2,
@@ -47,6 +49,12 @@ interface ContactFormProps {
   defaultDestination?: string;
   onSuccess?: () => void;
 }
+
+import axios from "axios";
+
+// Empty by default => same-origin ("/api/..."), which works locally and on
+// Hostinger. Only set VITE_API_BASE_URL if the API lives on another domain.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const POPULAR_DESTINATIONS = [
   { slug: "uk", name: "United Kingdom", flag: "🇬🇧" },
@@ -95,7 +103,7 @@ const POPULAR_CITIES = [
   "Charsadda",
   "Lahore",
 ];
-
+//logo
 /**
  * Uploadable Brand Logo Header Component for the Application Form
  */
@@ -340,6 +348,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     useState(false);
 
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
   const normalizedDestSlug =
     preferredDestination === "turkey"
@@ -370,7 +379,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     setErrorMsg(null);
     setSyncStatus(null);
 
-    const generatedAppId = PdfGenerationService.getNextReferralId();
+    const response = await axios.post(`${API_BASE_URL}/api/generate-reference`);
+
+    const generatedAppId = response.data.applicationId;
     const formattedDate = new Date().toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
@@ -491,6 +502,37 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       () => {},
     );
 
+    // 6. Email the SAME generated PDF to the student's own email address.
+    // Runs after the download + sheet sync, and never blocks or breaks them.
+    if (leadPayload.email && pdfBase64) {
+      fetch(`${API_BASE_URL}/api/send-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: generatedAppId,
+          fullName: leadPayload.fullName,
+          email: leadPayload.email,
+          phone: leadPayload.phone,
+          destination: leadPayload.destination,
+          pdfBase64,
+          pdfFileName,
+        }),
+      })
+        .then((r) => r.json())
+        .then((data) =>
+          setEmailStatus(
+            data?.success
+              ? `A copy of your inquiry form was emailed to ${leadPayload.email}`
+              : "We could not email your form copy. Please save the downloaded PDF.",
+          ),
+        )
+        .catch(() =>
+          setEmailStatus(
+            "We could not email your form copy. Please save the downloaded PDF.",
+          ),
+        );
+    }
+
     const token = GoogleIntegrationService.getAccessToken();
     if (token) {
       try {
@@ -506,7 +548,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             GoogleIntegrationService.sendNotificationEmail(
               token,
               leadPayload as any,
-              "iqbalmansoor55@gmail.com", //my email
+              "rshighereducation@gmail.com", //my email
             ),
             GoogleIntegrationService.uploadPdfToDrive(
               token,
@@ -749,45 +791,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               {/* Center: Official RS Monogram Logo & Brand Text (or Custom Uploaded Brand Logo) */}
               <div
                 onClick={openFormLogoModal}
-                className="flex flex-col items-center text-center -mt-2 cursor-pointer group/formlogo relative"
+                className="flex flex-col items-center text-center -mt-2  group/formlogo relative"
                 title="Click to upload or change your official brand logo">
-                {activeLogo ? (
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={activeLogo}
-                      alt="RS Higher Education Consultants Official Logo"
-                      className="h-16 sm:h-20 max-w-[240px] sm:max-w-[280px] object-contain transition-transform group-hover/formlogo:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <span className="text-[9px] text-[#A30000] font-bold opacity-0 group-hover/formlogo:opacity-100 transition-opacity mt-0.5">
-                      Click to Change Logo
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <div className="relative flex items-center justify-center">
-                      <span className="text-4xl sm:text-5xl font-serif font-black text-[#A30000] tracking-tighter">
-                        RS
-                      </span>
-                      <span className="text-amber-500 text-base font-bold absolute -top-1 right-[-10px]">
-                        ✦
-                      </span>
-                    </div>
-                    <h1 className="text-xs sm:text-sm font-black text-[#A30000] tracking-wider uppercase font-heading -mt-1">
-                      HIGHER EDUCATION
-                    </h1>
-                    <div className="flex items-center gap-2 -mt-0.5">
-                      <span className="h-[1px] w-5 bg-[#A30000]" />
-                      <span className="text-[10px] font-semibold text-[#A30000] tracking-widest uppercase">
-                        CONSULTANTS
-                      </span>
-                      <span className="h-[1px] w-5 bg-[#A30000]" />
-                    </div>
-                    <span className="text-[9px] text-slate-400 font-medium opacity-0 group-hover/formlogo:opacity-100 transition-opacity mt-0.5">
-                      Click to Upload Real Logo
-                    </span>
-                  </div>
-                )}
+                <div className="flex flex-col items-center">
+                  <img
+                    src={formLogo}
+                    alt="RS Higher Education Consultants Official Logo"
+                    className="h-16 sm:h-20 max-w-[240px] sm:max-w-[280px] object-contain transition-transform group-hover/formlogo:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
               </div>
 
               {/* Right: DATE */}
@@ -1497,6 +1510,14 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             <span>{syncStatus}</span>
           </div>
         )}
+
+        {/* Email Delivery Status Badge */}
+        {emailStatus && (
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+            <Mail className="w-4 h-4 text-emerald-600" />
+            <span>{emailStatus}</span>
+          </div>
+        )}
       </div>
     );
   }
@@ -1512,7 +1533,14 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       {/* Brand Header with Authentic RS Uploadable Official Logo */}
       <div className="flex flex-col items-center justify-center text-center gap-3 pb-6 border-b border-slate-100">
         {/* Uploadable Brand Logo Header */}
-        <FormLogoUploader height={85} />
+        <div className="w-28 h-28 sm:w-32 sm:h-32 overflow-hidden flex items-center justify-center">
+          <img
+            src={formLogo}
+            alt="RS Higher Education Consultants form-logo"
+            className="w-full h-full max-w-full object-contain drop-shadow-xs "
+            style={{ height: "85px", width: "auto" }}
+          />
+        </div>
 
         <div className="space-y-1">
           <div className="flex flex-wrap items-center justify-center gap-2">
@@ -1613,10 +1641,11 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             </label>
             <input
               id="form-dob"
-              type="text"
+              type="date"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
-              placeholder="e.g. 15/08/2001"
+              placeholder="mm/dd/yyyy"
+              maxLength={10}
               className="w-full bg-slate-50/80 border border-slate-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:outline-none focus:border-[#DB0303] focus:ring-2 focus:ring-red-100 transition-all shadow-xs"
             />
           </div>

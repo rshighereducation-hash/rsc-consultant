@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { STATS_DATA } from '../data/resourcesData';
-import { Globe2, Building2, ShieldCheck, Award, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { STATS_DATA } from "../data/resourcesData";
+import { Globe2, Building2, ShieldCheck, Award, Sparkles } from "lucide-react";
 
 const statIcons = [Globe2, Building2, Award, ShieldCheck];
 
 interface AnimatedStatCardProps {
-  stat: typeof STATS_DATA[0];
+  stat: (typeof STATS_DATA)[0];
   Icon: React.ComponentType<{ className?: string }>;
   isVisible: boolean;
 }
 
-const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({ stat, Icon, isVisible }) => {
+const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({
+  stat,
+  Icon,
+  isVisible,
+}) => {
   const [displayCount, setDisplayCount] = useState<number>(0);
   const animationFrameRef = useRef<number | null>(null);
 
@@ -61,8 +65,7 @@ const AnimatedStatCard: React.FC<AnimatedStatCardProps> = ({ stat, Icon, isVisib
     <div
       id={`stat-item-${stat.id}`}
       onMouseEnter={() => startCounting()}
-      className="p-6 rounded-3xl bg-white border border-red-100 hover:border-red-300 hover:shadow-xl hover:shadow-red-950/5 transition-all duration-300 text-center sm:text-left space-y-3 group hover:-translate-y-1 cursor-default"
-    >
+      className="p-6 rounded-3xl bg-white border border-red-100 hover:border-red-300 hover:shadow-xl hover:shadow-red-950/5 transition-all duration-300 text-center sm:text-left space-y-3 group hover:-translate-y-1 cursor-default">
       <div className="flex items-center justify-center sm:justify-start gap-3.5">
         <div className="p-3.5 rounded-2xl bg-red-50 text-[#DB0303] group-hover:bg-[#DB0303] group-hover:text-white transition-all duration-300 shadow-xs group-hover:scale-110">
           <Icon className="w-6 h-6" />
@@ -100,7 +103,7 @@ export const StatsCounter: React.FC = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (sectionRef.current) {
@@ -116,13 +119,15 @@ export const StatsCounter: React.FC = () => {
     <section
       id="stats-section"
       ref={sectionRef}
-      className="py-16 bg-white relative overflow-hidden border-y border-red-100"
-    >
+      className="py-16 bg-white relative overflow-hidden border-y border-red-100">
       {/* Decorative ambient gradient backdrop */}
       <div className="absolute inset-0 bg-gradient-to-r from-red-50/40 via-white to-red-50/40 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          data-aos="fade-up"
+          data-aos-delay="200">
           {STATS_DATA.map((stat, idx) => {
             const Icon = statIcons[idx % statIcons.length];
             return (
@@ -139,4 +144,3 @@ export const StatsCounter: React.FC = () => {
     </section>
   );
 };
-

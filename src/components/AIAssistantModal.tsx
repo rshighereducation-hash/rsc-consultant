@@ -4,6 +4,10 @@ import { ChatMessage, INITIAL_GREETING, generateLocalAdvisorResponse } from '../
 import { BUSINESS_INFO } from '../data/businessInfo';
 import { generateGermanyChecklistPDF } from '../utils/germanyPdfGenerator';
 import { generateTurkeyChecklistPDF, generateTurkeyInterviewGuidePDF } from '../utils/turkeyPdfGenerator';
+import { generateUKChecklistPDF } from '../utils/unitedkingdom';
+import { generateItalyChecklistPDF } from '../utils/italyPdfGenerator';
+import { generateCyprusChecklistPDF } from '../utils/cyprusPdfGenerator';
+import { generateLithuaniaChecklistPDF } from '../utils/lithuaniaPdfGenerator';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import {
   Sparkles,
@@ -185,6 +189,14 @@ export const AIAssistantModal: React.FC<AIAssistantModalProps> = ({
         generateTurkeyInterviewGuidePDF();
       } else if (action.payload === 'germany-checklist') {
         generateGermanyChecklistPDF();
+      } else if (action.payload === 'uk-checklist') {
+        generateUKChecklistPDF();
+      } else if (action.payload === 'italy-checklist') {
+        generateItalyChecklistPDF();
+      } else if (action.payload === 'cyprus-checklist') {
+        generateCyprusChecklistPDF();
+      } else if (action.payload === 'lithuania-checklist') {
+        generateLithuaniaChecklistPDF();
       }
     }
   };

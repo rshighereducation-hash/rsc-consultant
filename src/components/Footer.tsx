@@ -105,7 +105,7 @@ export const Footer: React.FC<FooterProps> = ({
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Clock className="w-4 h-4 text-[#DB0303] shrink-0" />
                 <span>Mon – Sat: 10:00 AM – 6:00 PM (PKT)</span>
               </div>
             </div>

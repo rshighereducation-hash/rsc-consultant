@@ -233,6 +233,35 @@ The UK offers prestigious 3-year Bachelor and 1-year Master degrees with a **2-y
     };
   }
 
+  // 7b. Italy Inquiries
+  if (
+    query.includes('italy') ||
+    query.includes('universitaly') ||
+    query.includes('cimea') ||
+    query.includes('dsu') ||
+    query.includes('milan') ||
+    query.includes('rome')
+  ) {
+    return {
+      text: `### 🇮🇹 Study in Italy (Public Universities & DSU Regional Scholarships)
+
+Italy is one of the most prestigious study destinations in Europe, offering world-class bachelor and master degrees in English with **100% tuition fee waivers and DSU stipends** for Pakistani students!
+
+#### 📌 Financials & Visa Highlights:
+• **Tuition Fees:** **€500 – €3,000 / year** (Waived up to 100% with DSU Regional Scholarship).
+• **DSU Scholarship Stipend:** **€6,000 – €8,000 / year** cash allowance + free student canteen meals.
+• **Pre-Enrollment:** Universitaly portal pre-enrollment + CIMEA / Declaration of Value (DOV).
+• **Bank Statement:** **€6,000 – €8,000** in student/parent bank account.
+• **Work Rights:** 20 hours/week during studies + 1-Year Job Search Residence Permit.
+
+*Would you like to download our official **Italy Admission & Embassy Visa Checklist (PDF)** or speak directly with our counselor?*`,
+      suggestedActions: [
+        { label: '📥 Download Italy Checklist (PDF)', actionType: 'pdf', payload: 'italy-checklist' },
+        { label: '💬 Consult on Italy DSU Scholarship', actionType: 'whatsapp', payload: 'https://wa.me/923344626284?text=Assalam-o-Alaikum!%20I%20want%20to%20apply%20for%20Italy%20Universitaly%20and%20DSU%20scholarship.' },
+      ],
+    };
+  }
+
   // 8. Lithuania Inquiries
   if (
     query.includes('lithuania') ||

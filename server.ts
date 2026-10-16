@@ -1,11 +1,23 @@
+import { generateReference } from "./src/utils/generateReference";
+
+import dns from "node:dns";
+dns.setDefaultResultOrder("ipv4first");
+
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 // import nodemailer for email
 import nodemailer from "nodemailer";
-import "dotenv/config";
+import Student from "./models/student";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import { connectDB } from "./db/mongodb";
 
 async function startServer() {
+  await connectDB();
+
   const app = express();
   //add the process.env.port for Hostinger
   const PORT = Number(process.env.PORT) || 3000;
@@ -18,6 +30,28 @@ async function startServer() {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+  });
+
+  // Do not leak backend framework details to the client
+  app.disable("x-powered-by");
+
+  // CORS - only needed when the frontend is hosted on a different domain
+  // than the API (e.g. https://rshec.pk calling https://api.rshec.pk).
+  const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Vary", "Origin");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    }
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
   });
 
   app.use(express.json({ limit: "10mb" }));
@@ -114,9 +148,24 @@ Your objective:
       return res.json({ reply: null });
     }
   });
+  // Generate a new MongoDB reference number
+  app.post("/api/generate-reference", async (_req, res) => {
+    try {
+      const referenceNumber = await generateReference();
 
-  // In-memory leads storage for reliable data preservation
-  const storedLeads: any[] = [];
+      return res.status(200).json({
+        success: true,
+        applicationId: referenceNumber,
+      });
+    } catch (error) {
+      console.error("Reference generation error:", error);
+
+      return res.status(500).json({
+        success: false,
+        error: "Unable to generate reference number.",
+      });
+    }
+  });
 
   // Lead Generation / Contact submission endpoint
   app.post("/api/contact", async (req, res) => {
@@ -148,11 +197,11 @@ Your objective:
           error: "Please provide full name and WhatsApp/phone number.",
         });
       }
+      const referenceNumber = applicationId;
 
       const leadData = {
-        id:
-          applicationId ||
-          `RS-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
+        id: referenceNumber,
+        referenceNumber: referenceNumber,
         submittedAt: new Date().toLocaleString("en-GB", {
           dateStyle: "medium",
           timeStyle: "short",
@@ -172,7 +221,7 @@ Your objective:
         status: "NEW_INQUIRY",
       };
 
-      storedLeads.unshift(leadData);
+      await Student.create(leadData);
       // for pdf to email
 
       try {
@@ -234,17 +283,97 @@ ${message || ""}
     }
   });
 
+  // Email the generated inquiry PDF to the student's own email address
+  app.post("/api/send-email", async (req, res) => {
+    try {
+      const {
+        applicationId,
+        fullName,
+        email,
+        phone,
+        destination,
+        pdfBase64,
+        pdfFileName,
+      } = req.body || {};
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!fullName || !email || !emailPattern.test(String(email).trim())) {
+        return res.status(400).json({
+          success: false,
+          error: "A valid student name and email address are required.",
+        });
+      }
+
+      if (!pdfBase64) {
+        return res.status(400).json({
+          success: false,
+          error: "The inquiry form PDF attachment is missing.",
+        });
+      }
+
+      // Sanitize the filename coming from the client
+      const safeFileName = String(
+        pdfFileName || `RS_Inquiry_Form_${fullName}.pdf`,
+      ).replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM || process.env.SMTP_USER,
+        to: String(email).trim(),
+        subject: "Your Inquiry Form - RS Higher Education Consultants",
+        text: `Dear ${fullName},
+
+Thank you for contacting RS Higher Education Consultants.
+
+A copy of the inquiry form you submitted is attached to this email for your records.
+
+Reference: ${applicationId || "-"}
+Mobile: ${phone || "-"}
+Preferred Destination: ${destination || "-"}
+
+Our senior counselor will contact you within 24 hours.
+
+RS Higher Education Consultants
+Office No. UG-389, Upper Ground Floor, Deans Trade Centre, Peshawar Cantt, KPK
+WhatsApp: +92 334 4626284 | www.rshec.pk`,
+        attachments: [
+          {
+            filename: safeFileName,
+            content: Buffer.from(pdfBase64, "base64"),
+            contentType: "application/pdf",
+          },
+        ],
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "A copy of your inquiry form has been emailed to you.",
+      });
+    } catch (err) {
+      // Log the real reason on the server only - never send it to the client
+      console.error("send-email error:", err);
+      return res.status(502).json({
+        success: false,
+        error: "Unable to send the email at this time. Please try again later.",
+      });
+    }
+  });
+
   // Get all leads
-  app.get("/api/leads", (_req, res) => {
-    res.json({
-      success: true,
-      total: storedLeads.length,
-      leads: storedLeads,
-    });
+  app.get("/api/leads", async (_req, res) => {
+    try {
+      const leads = await Student.find().sort({ createdAt: -1 }).lean();
+      return res.json({ success: true, total: leads.length, leads });
+    } catch (error) {
+      console.error("Error loading leads:", error);
+      return res
+        .status(500)
+        .json({ success: false, error: "Unable to load leads." });
+    }
   });
 
   // Export all leads directly as CSV download
-  app.get("/api/export-leads-csv", (_req, res) => {
+  app.get("/api/export-leads-csv", async (_req, res) => {
     const headers = [
       "Submission Date",
       "Application ID",
@@ -260,31 +389,39 @@ ${message || ""}
       "Student Notes",
     ];
 
-    const rows = storedLeads.map((l) =>
-      [
-        `"${l.submittedAt || ""}"`,
-        `"${l.id || ""}"`,
-        `"${(l.fullName || "").replace(/"/g, '""')}"`,
-        `"${(l.phone || "").replace(/"/g, '""')}"`,
-        `"${(l.email || "").replace(/"/g, '""')}"`,
-        `"${(l.city || "").replace(/"/g, '""')}"`,
-        `"${(l.destination || "").replace(/"/g, '""')}"`,
-        `"${(l.studyLevel || "").replace(/"/g, '""')}"`,
-        `"${(l.targetIntake || "").replace(/"/g, '""')}"`,
-        `"${(l.ieltsStatus || "").replace(/"/g, '""')}"`,
-        `"${(l.academicBackground || "").replace(/"/g, '""')}"`,
-        `"${(l.message || "").replace(/"/g, '""')}"`,
-      ].join(","),
-    );
+    try {
+      const leads = await Student.find().sort({ createdAt: -1 }).lean();
+      const rows = leads.map((l) =>
+        [
+          `"${l.submittedAt || ""}"`,
+          `"${l.id || ""}"`,
+          `"${(l.fullName || "").replace(/"/g, '""')}"`,
+          `"${(l.phone || "").replace(/"/g, '""')}"`,
+          `"${(l.email || "").replace(/"/g, '""')}"`,
+          `"${(l.city || "").replace(/"/g, '""')}"`,
+          `"${(l.destination || "").replace(/"/g, '""')}"`,
+          `"${(l.studyLevel || "").replace(/"/g, '""')}"`,
+          `"${(l.targetIntake || "").replace(/"/g, '""')}"`,
+          `"${(l.ieltsStatus || "").replace(/"/g, '""')}"`,
+          `"${(l.academicBackground || "").replace(/"/g, '""')}"`,
+          `"${(l.message || "").replace(/"/g, '""')}"`,
+        ].join(","),
+      );
 
-    const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
 
-    res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="RS_Consultants_Leads_${new Date().toISOString().slice(0, 10)}.csv"`,
-    );
-    res.status(200).send(csvContent);
+      res.setHeader("Content-Type", "text/csv; charset=utf-8");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="RS_Consultants_Leads_${new Date().toISOString().slice(0, 10)}.csv"`,
+      );
+      return res.status(200).send(csvContent);
+    } catch (error) {
+      console.error("Error exporting leads:", error);
+      return res
+        .status(500)
+        .json({ success: false, error: "Unable to export leads." });
+    }
   });
 
   // Quick Consultation booking endpoint
@@ -355,4 +492,10 @@ ${message || ""}
   });
 }
 
-startServer();
+startServer().catch((error) => {
+  console.error(
+    "Server startup failed:",
+    error instanceof Error ? error.message : "Unknown error",
+  );
+  process.exitCode = 1;
+});

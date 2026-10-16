@@ -10,6 +10,14 @@ import {
   generateTurkeyChecklistPDF,
   generateTurkeyInterviewGuidePDF,
 } from "../utils/turkeyPdfGenerator";
+import { UKChecklistSection } from "./UKChecklistSection";
+import { generateUKChecklistPDF } from "../utils/unitedkingdom";
+import { ItalyChecklistSection } from "./ItalyChecklistSection";
+import { generateItalyChecklistPDF } from "../utils/italyPdfGenerator";
+import { CyprusChecklistSection } from "./CyprusChecklistSection";
+import { generateCyprusChecklistPDF } from "../utils/cyprusPdfGenerator";
+import { LithuaniaChecklistSection } from "./LithuaniaChecklistSection";
+import { generateLithuaniaChecklistPDF } from "../utils/lithuaniaPdfGenerator";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import {
   ArrowLeft,
@@ -96,6 +104,10 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
     | "visa"
     | "germany-checklist"
     | "turkey-checklist"
+    | "uk-checklist"
+    | "italy-checklist"
+    | "cyprus-checklist"
+    | "lithuania-checklist"
   >("overview");
   const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
 
@@ -124,6 +136,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
   const isUk =
     destination.slug === "united-kingdom" || destination.slug === "uk";
   const isLithuania = destination.slug === "lithuania";
+  const isItaly = destination.slug === "italy" || destination.slug === "italia";
 
   const handleDownloadGermanyPdf = () => {
     setIsDownloadingPdf(true);
@@ -147,6 +160,17 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
     }
   };
 
+  const handleDownloadItalyPdf = () => {
+    setIsDownloadingPdf(true);
+    try {
+      generateItalyChecklistPDF();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setTimeout(() => setIsDownloadingPdf(false), 800);
+    }
+  };
+
   const handleDownloadCyprusPdf = () => {
     setIsDownloadingPdf(true);
     try {
@@ -160,7 +184,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         a.click();
         document.body.removeChild(a);
       } else {
-        onOpenConsultation();
+        generateCyprusChecklistPDF();
       }
     } catch (e) {
       console.error(e);
@@ -181,7 +205,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         a.click();
         document.body.removeChild(a);
       } else {
-        onOpenConsultation();
+        generateUKChecklistPDF();
       }
     } catch (e) {
       console.error(e);
@@ -203,7 +227,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         a.click();
         document.body.removeChild(a);
       } else {
-        onOpenConsultation();
+        generateLithuaniaChecklistPDF();
       }
     } catch (e) {
       console.error(e);
@@ -359,7 +383,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
+              {/* <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-red-200 text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading shadow-2xs">
                 <CountryFlag
                   countryCode={destination.slug}
                   countryName={destination.countryName}
@@ -367,9 +391,11 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                   size="sm"
                 />
                 <span>{destination.tagline}</span>
-              </div>
+              </div> */}
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-slate-900 leading-tight">
+              <h1
+                data-aos="fade-right"
+                className="text-3xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-slate-900 leading-tight">
                 Study in{" "}
                 <span className="text-[#DB0303]">
                   {destination.countryName}
@@ -377,12 +403,16 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                 for Pakistani Students
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
+              <p
+                data-aos="fade-right"
+                className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
                 {destination.overview}
               </p>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div
+                data-aos="fade-right"
+                className="pt-2 flex flex-wrap items-center gap-3">
                 {/* Germany: Only Germany Checklist */}
                 {isGermany && (
                   <button
@@ -518,7 +548,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                         ? "Preparing PDF..."
                         : customUkChecklistPdf
                           ? "UK Checklist (PDF)"
-                          : "UK Checklist"}
+                          : "Download UK Checklist"}
                     </span>
                     {customUkChecklistPdf && (
                       <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase tracking-wider">
@@ -548,7 +578,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                         ? "Preparing PDF..."
                         : customLithuaniaChecklistPdf
                           ? "Lithuania Checklist (PDF)"
-                          : "Lithuania Checklist"}
+                          : " Download Lithuania Checklist"}
                     </span>
                     {customLithuaniaChecklistPdf && (
                       <span className="ml-1 px-1.5 py-0.5 text-[9px] bg-slate-950 text-amber-300 rounded font-bold uppercase tracking-wider">
@@ -558,12 +588,32 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                   </button>
                 )}
 
+                {/* Italy: Italy Checklist */}
+                {isItaly && (
+                  <button
+                    onClick={handleDownloadItalyPdf}
+                    disabled={isDownloadingPdf}
+                    id="hero-italy-download-checklist-btn"
+                    className="px-5 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-2xl font-heading shadow-md transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02] border border-amber-300 active:scale-95"
+                    title="Italy Checklist PDF">
+                    <Download
+                      className={`w-4 h-4 text-slate-950 ${isDownloadingPdf ? "animate-bounce" : ""}`}
+                    />
+                    <span>
+                      {isDownloadingPdf
+                        ? "Preparing PDF..."
+                        : "Download Italy Checklist"}
+                    </span>
+                  </button>
+                )}
+
                 {/* For destinations without dedicated checklist: default consultation & WhatsApp */}
                 {!isGermany &&
                   !isTurkey &&
                   !isCyprus &&
                   !isUk &&
-                  !isLithuania && (
+                  !isLithuania &&
+                  !isItaly && (
                     <>
                       <button
                         onClick={onOpenConsultation}
@@ -666,6 +716,42 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                   },
                 ]
               : []),
+            ...(isUk
+              ? [
+                  {
+                    id: "uk-checklist",
+                    label: "📄 Official UK Checklist (PDF)",
+                    highlight: true,
+                  },
+                ]
+              : []),
+            ...(isItaly
+              ? [
+                  {
+                    id: "italy-checklist",
+                    label: "📄 Official Italy Checklist (PDF)",
+                    highlight: true,
+                  },
+                ]
+              : []),
+            ...(isCyprus
+              ? [
+                  {
+                    id: "cyprus-checklist",
+                    label: "📄 Official South Cyprus Checklist (PDF)",
+                    highlight: true,
+                  },
+                ]
+              : []),
+            ...(isLithuania
+              ? [
+                  {
+                    id: "lithuania-checklist",
+                    label: "📄 Official Lithuania Checklist (PDF)",
+                    highlight: true,
+                  },
+                ]
+              : []),
             { id: "requirements", label: "Entry Requirements" },
             { id: "process", label: "10-Step Admission" },
             { id: "costs", label: "Costs & Scholarships" },
@@ -707,6 +793,34 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
           </div>
         )}
 
+        {/* UK SPECIAL: DEDICATED OFFICIAL CHECKLIST TAB */}
+        {activeTab === "uk-checklist" && isUk && (
+          <div className="animate-in fade-in duration-200">
+            <UKChecklistSection />
+          </div>
+        )}
+
+        {/* ITALY SPECIAL: DEDICATED OFFICIAL CHECKLIST TAB */}
+        {activeTab === "italy-checklist" && isItaly && (
+          <div className="animate-in fade-in duration-200">
+            <ItalyChecklistSection />
+          </div>
+        )}
+
+        {/* SOUTH CYPRUS SPECIAL: DEDICATED OFFICIAL CHECKLIST TAB */}
+        {activeTab === "cyprus-checklist" && isCyprus && (
+          <div className="animate-in fade-in duration-200">
+            <CyprusChecklistSection />
+          </div>
+        )}
+
+        {/* LITHUANIA SPECIAL: DEDICATED OFFICIAL CHECKLIST TAB */}
+        {activeTab === "lithuania-checklist" && isLithuania && (
+          <div className="animate-in fade-in duration-200">
+            <LithuaniaChecklistSection />
+          </div>
+        )}
+
         {/* TAB 1: OVERVIEW & WHY STUDY HERE */}
         {activeTab === "overview" && (
           <div className="space-y-8 animate-in fade-in duration-200">
@@ -725,6 +839,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {whyStudyList.map((reason, idx) => (
                   <div
+                    data-aos="fade-up"
                     key={idx}
                     className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-2 hover:border-red-300 hover:shadow-md transition-all hover:-translate-y-0.5">
                     <div className="flex items-center gap-2 text-xs font-bold text-[#DB0303] font-heading">
@@ -756,6 +871,7 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {popularFieldsList.map((field, fIdx) => (
                   <div
+                    data-aos="fade-up"
                     key={fIdx}
                     className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-2">
                     <div className="flex items-center gap-2">
@@ -786,7 +902,9 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
             </div>
 
             {/* Work & Career Rights */}
-            <div className="bg-white text-slate-900 rounded-3xl p-6 sm:p-10 border border-red-100 shadow-xl shadow-red-950/5 space-y-6">
+            <div
+              data-aos="fade-up"
+              className="bg-white text-slate-900 rounded-3xl p-6 sm:p-10 border border-red-100 shadow-xl shadow-red-950/5 space-y-6">
               <div className="space-y-1">
                 <span className="text-xs font-bold text-[#DB0303] uppercase tracking-wider font-heading">
                   Employment & Career Rights
@@ -1017,6 +1135,40 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                     <button
                       onClick={() => setActiveTab("turkey-checklist")}
                       className="px-3 py-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl font-heading transition-all cursor-pointer">
+                      View Online
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Special UK Download Callout */}
+              {isUk && (
+                <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-[#990000] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl border-2 border-red-500/30">
+                  <div className="space-y-1 text-center sm:text-left">
+                    <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-300 uppercase tracking-wider font-heading">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Official 2026 UK Documentation Guide</span>
+                    </div>
+                    <h4 className="text-base font-black font-heading text-white">
+                      Official UK University &amp; UKVI Student Visa Checklist
+                      (PDF)
+                    </h4>
+                    <p className="text-xs text-slate-300">
+                      CAS issuance requirements, 28-day bank statement, IOM TB
+                      screening test, and IHS health surcharge.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={handleDownloadUkPdf}
+                      disabled={isDownloadingPdf}
+                      className="px-5 py-3 bg-[#DB0303] hover:bg-[#B30000] text-white text-xs font-bold rounded-xl font-heading shadow-md hover:scale-105 transition-all flex items-center gap-2 cursor-pointer">
+                      <Download className="w-4 h-4" />
+                      <span>Download UK PDF</span>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("uk-checklist")}
+                      className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl font-heading transition-all cursor-pointer">
                       View Online
                     </button>
                   </div>
@@ -1319,6 +1471,32 @@ export const DestinationDetailView: React.FC<DestinationDetailViewProps> = ({
                     <span>Turkey Questioner (PDF)</span>
                   </button>
                 </div>
+              </div>
+            )}
+
+            {/* Special UK Visa Checklist Callout */}
+            {isUk && (
+              <div className="p-6 rounded-2xl bg-red-50 border-2 border-red-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="space-y-1 text-center sm:text-left">
+                  <h4 className="text-sm font-bold font-heading text-slate-900 flex items-center justify-center sm:justify-start gap-2">
+                    <FileCheck2 className="w-4 h-4 text-[#DB0303]" />
+                    <span>
+                      Printable 2026 UKVI Student Visa &amp; CAS Checklist
+                    </span>
+                  </h4>
+                  <p className="text-xs text-slate-600">
+                    Includes CAS guidelines, 28-day maintenance funds (£9,207
+                    outside / £12,006 inside London), IOM TB test, and IHS
+                    surcharge (£776/yr).
+                  </p>
+                </div>
+                <button
+                  onClick={handleDownloadUkPdf}
+                  disabled={isDownloadingPdf}
+                  className="px-5 py-3 bg-[#DB0303] hover:bg-[#B30000] text-white text-xs font-bold rounded-xl font-heading shadow-md hover:scale-105 transition-all flex items-center gap-2 cursor-pointer shrink-0">
+                  <Download className="w-4 h-4" />
+                  <span>Download Official PDF</span>
+                </button>
               </div>
             )}
 
